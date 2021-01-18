@@ -22,10 +22,9 @@ library(mongolite)
 library(beepr)
 library(beepr)
 
-# 2. Nos conectamos a R 
-#Cambiar el directorio de trabajo#
-#setwd("D:/Guada/Research/poltweet/")
+# 2. Nos conectamos a la API de twitter
 #Conectarse a Twitter - para esto tienen que tener creada la aplicacion en TW#
+
 options(RCurlOptions = list( capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
 reqURL<-"https://api.twitter.com/oauth/request_token"
 accessURL<-"https://api.twitter.com/oauth/access_token"
@@ -35,19 +34,22 @@ consumerSecret<-"xxxxxxxxxxxxxx" #Idem
 access_token <- "xxxxxxxxxxxxxx-xxxxxxxxxxxxxx"
 access_secret <- "xxxxxxxxxxxxxx"
 setup_twitter_oauth(consumerKey, consumerSecret, access_token, access_secret)
-1
-appname <- "Guadag"
+
+appname <- "xxxxx"
 token <- create_token(app =  appname, consumer_key = consumerKey , 
                       consumer_secret = consumerSecret,
                       access_token = access_token,
                       access_secret = access_secret
 )
+
 ## nos conectamos a mongolite -----------------------------------------
 url_path = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
 url_path_2 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
 url_path_3 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcsm
 url_path_4 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #otros, prov
+
 #Cargamos los datasets necesarios -----------------------------------------
+
 ### name_columns ------
 name_columns <- mongo(collection = "name_columns", # Data Table
                       db = "configuration_db", # DataBase
@@ -56,26 +58,25 @@ name_columns <- mongo(collection = "name_columns", # Data Table
 name_columns <- name_columns$find(query = '{}')
 name_columns <- pivot_wider(name_columns, names_from = columns, values_from = columns) 
 name_columns <- name_columns[0, c(1:90)]
+
 ### lista_politicxs ------
 lista_politicxs <- mongo(collection = "lista_politicxs", # Data Table
                          db = "configuration_db", # DataBase
                          url = url_path, 
                          verbose = TRUE)
 lista_politicxs <- lista_politicxs$find(query = '{}')
-#data_historico <- read.csv("casi_historico.csv")
-#status_id_historico <- read.csv(file = "/Users/guadalupegonzalez/Downloads/poltweet-master/status_id_historico.csv")
+
 ### cargamos el status  ------
 status_id_hist <- mongo(collection = "status_id", # Data Table
                         db = "CREC_db", # DataBase
                         url = url_path, 
                         verbose = TRUE)
 status_id <- status_id_hist$find(query = '{}')
-#Le pedimos a R que nos traiga la info a partir de esta función:
 
 ### VAMOS A TENER QUE HACER UNA LISTA PARA CADA TIPO DE ORGANISMO ------
 
 ### PEN ----------------------------------------------------------------
-Sys.time()
+
 data_pen <- name_columns
 d <- as.data.frame(lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"])
 names(d)[1] <- "user_id"
@@ -123,11 +124,9 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
 }
 save(data_pen, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_pen_", 
                              Sys.Date(),".RData")) 
-beep(sound = 5)
-Sys.time()
+
 
 # OTRXS -------------------------------------------------------------------
-Sys.time()
 data_otrxs <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) {
@@ -172,11 +171,10 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
 }
 save(data_otrxs, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_otrxs_", 
                                Sys.Date(),".RData")) 
-beep(sound = 5)
-Sys.time()
+
 
 # PROVINCIAL --------------------------------------------------------------
-Sys.time()
+
 data_prov <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_id"]) {
@@ -220,12 +218,10 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
 }
 save(data_prov, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_prov_", 
                               Sys.Date(),".RData")) 
-beep(sound = 5)
-Sys.time()
+
 
 # HCDN --------------------------------------------------------------------
 
-Sys.time()
 data_hcdn <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) {
@@ -271,10 +267,10 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) 
 save(data_hcdn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hcdn_", 
                               Sys.Date(),".RData")) 
                               
-beep(sound = 5)
-Sys.time()
+
+
 # HSN ---------------------------------------------------------------------
-Sys.time()
+
 data_hsn <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
@@ -319,8 +315,6 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
 }
 save(data_hsn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hsn_", 
                              Sys.Date(),".RData")) 
-beep(sound = 5)
-Sys.time()
 
 # DATA CRECIMIENTO --------------------------------------------------------------------
 data_crecimiento <- rbind(data_pen, data_prov, data_otrxs, data_hsn, data_hcdn)
