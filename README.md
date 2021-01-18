@@ -34,7 +34,6 @@ _Es un proyecto realizado en el marco del [Observatorio de redes](https://twitte
 ## Si te gustó el proyecto o te resultó útil:
 
 * Comenta a otros sobre este proyecto 📢
-* Citanos
 
 ## Por cualquier duda o consulta, podes escribirnos a:
 * **Twitter Oficial del Observatorio:** https://twitter.com/O_de_R
