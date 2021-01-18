@@ -11,8 +11,6 @@ _Descargá los timelines de funcionarios y realizá análisis 📊 a partir de n
 
 ## Construido con 🛠️
 
-_Rstudio y rtweet package:_
-
 * [Rstudio](https://rstudio.com/) 
 * [rtweet package](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf)
 * [Shiny App](https://shiny.rstudio.com)
