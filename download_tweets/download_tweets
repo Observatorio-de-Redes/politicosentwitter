@@ -1,0 +1,355 @@
+  
+library("ROAuth")
+library("httr")
+library("foreign")
+library("twitteR")
+library(tidyverse)
+library(splitstackshape)
+library("tidyverse")
+library("sqldf")
+library("ROAuth")
+library("httr")
+library("foreign")
+library("twitteR")
+library(tidyverse)
+library(splitstackshape)
+library(sqldf)
+library("rtweet")
+library("rtweet")
+library("rjson")
+library("rjson")
+library(mongolite)
+library(mongolite)
+library(beepr)
+library(beepr)
+
+# 2. Nos conectamos a la API de twitter
+#Conectarse a Twitter - para esto tienen que tener creada la aplicacion en TW#
+
+options(RCurlOptions = list( capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
+reqURL<-"https://api.twitter.com/oauth/request_token"
+accessURL<-"https://api.twitter.com/oauth/access_token"
+authURL<-"https://api.twitter.com/oauth/authorize"
+consumerKey<-"xxxxxxxxxxxxxx" #clave que se da cuando se genera la app individual en Twitter
+consumerSecret<-"xxxxxxxxxxxxxx" #Idem
+access_token <- "xxxxxxxxxxxxxx-xxxxxxxxxxxxxx"
+access_secret <- "xxxxxxxxxxxxxx"
+setup_twitter_oauth(consumerKey, consumerSecret, access_token, access_secret)
+
+appname <- "xxxxx"
+token <- create_token(app =  appname, consumer_key = consumerKey , 
+                      consumer_secret = consumerSecret,
+                      access_token = access_token,
+                      access_secret = access_secret
+)
+
+## nos conectamos a mongolite -----------------------------------------
+url_path = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
+url_path_2 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
+url_path_3 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcsm
+url_path_4 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #otros, prov
+
+#Cargamos los datasets necesarios -----------------------------------------
+
+### name_columns ------
+name_columns <- mongo(collection = "name_columns", # Data Table
+                      db = "configuration_db", # DataBase
+                      url = url_path, 
+                      verbose = TRUE)
+name_columns <- name_columns$find(query = '{}')
+name_columns <- pivot_wider(name_columns, names_from = columns, values_from = columns) 
+name_columns <- name_columns[0, c(1:90)]
+
+### lista_politicxs ------
+lista_politicxs <- mongo(collection = "lista_politicxs", # Data Table
+                         db = "configuration_db", # DataBase
+                         url = url_path, 
+                         verbose = TRUE)
+lista_politicxs <- lista_politicxs$find(query = '{}')
+
+### cargamos el status  ------
+status_id_hist <- mongo(collection = "status_id", # Data Table
+                        db = "CREC_db", # DataBase
+                        url = url_path, 
+                        verbose = TRUE)
+status_id <- status_id_hist$find(query = '{}')
+
+### VAMOS A TENER QUE HACER UNA LISTA PARA CADA TIPO DE ORGANISMO ------
+
+### PEN ----------------------------------------------------------------
+
+data_pen <- name_columns
+d <- as.data.frame(lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"])
+names(d)[1] <- "user_id"
+d <- d[-c(1:5), ]
+pen_def <- data_pen
+j = 1
+for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
+   l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
+   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   
+   if(j%%151 == 0) {
+      print ('Waiting 15 min...')
+      Sys.sleep(960) 
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_pen <- rbind(data_pen, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+   }
+   
+   else{
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_pen <- rbind(data_pen, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+      
+   }
+   
+   j <- j + 1  
+   print(j)
+   
+}
+save(data_pen, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_pen_", 
+                             Sys.Date(),".RData")) 
+
+
+# OTRXS -------------------------------------------------------------------
+data_otrxs <- name_columns
+j = 1
+for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) {
+   l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
+   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   
+   if(j%%151 == 0) {
+      print ('Waiting 15 min...')
+      Sys.sleep(960) 
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_otrxs <- rbind(data_otrxs, df_timeline)
+      
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_4, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+   }
+   
+   else{
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_otrxs <- rbind(data_otrxs, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_4, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+      
+   }
+   
+   j <- j + 1  
+   print(j)
+   
+}
+save(data_otrxs, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_otrxs_", 
+                               Sys.Date(),".RData")) 
+
+
+# PROVINCIAL --------------------------------------------------------------
+
+data_prov <- name_columns
+j = 1
+for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_id"]) {
+   l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
+   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   
+   if(j%%151 == 0) {
+      print ('Waiting 15 min...')
+      Sys.sleep(960) 
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_prov <- rbind(data_prov, df_timeline)
+      
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_4, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+   }
+   
+   else{
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_prov <- rbind(data_prov, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_4, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+      
+   }
+   
+   j <- j + 1  
+   print(j)
+   
+}
+save(data_prov, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_prov_", 
+                              Sys.Date(),".RData")) 
+
+
+# HCDN --------------------------------------------------------------------
+
+data_hcdn <- name_columns
+j = 1
+for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) {
+   l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
+   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   
+   if(j%%151 == 0) {
+      print ('Waiting 15 min...')
+      Sys.sleep(960) 
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_hcdn <- rbind(data_hcdn, df_timeline)
+      
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_2, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+   }
+   
+   else{
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_hcdn <- rbind(data_hcdn, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_2, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+      
+   }
+   
+   j <- j + 1  
+   print(j)
+   
+}
+save(data_hcdn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hcdn_", 
+                              Sys.Date(),".RData")) 
+                              
+
+
+# HSN ---------------------------------------------------------------------
+
+data_hsn <- name_columns
+j = 1
+for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
+   l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
+   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   
+   if(j%%151 == 0) {
+      print ('Waiting 15 min...')
+      Sys.sleep(960) 
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_hsn <- rbind(data_hsn, df_timeline)
+      
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_3, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+   }
+   
+   else{
+      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
+      data_hsn <- rbind(data_hsn, df_timeline)
+      df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
+      my_query <- mongo(collection = l, # Data Table
+                        db = h, # DataBase
+                        url = url_path_3, 
+                        verbose = TRUE)
+      my_query$insert(df_timeline)
+      rm(my_query, df_timeline)
+      
+   }
+   
+   j <- j + 1  
+   print(j)
+   
+}
+save(data_hsn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hsn_", 
+                             Sys.Date(),".RData")) 
+
+# DATA CRECIMIENTO --------------------------------------------------------------------
+data_crecimiento <- rbind(data_pen, data_prov, data_otrxs, data_hsn, data_hcdn)
+## DATA CREC --------------------------------------------------------------------
+data_crec <- data_crecimiento
+data_crec <- data_crec[, c(1, 4, 73:85)]
+data_crec$date <- Sys.Date()
+data_crec <- data.frame(lapply(data_crec, as.character), stringsAsFactors=FALSE)
+data_crec <- sqldf("select * from data_crec GROUP BY screen_name")
+save(data_crec, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_crec", 
+                             Sys.Date(),".RData")) 
+my_query <- mongo(collection = "data_crec", # Data Table
+                  db = "CREC_db", # DataBase
+                  url = url_path, 
+                  verbose = TRUE)
+my_query$insert(data_crec)
+
+# STATUS ID --------------------------------------------------------------------
+status_id_new <- data_crecimiento[, c(1, 2, 3, 4)]
+status_id_new <- sqldf("SELECT *, MAX(created_at) as max_created_at FROM status_id_new 
+      GROUP BY user_id")
+names(status_id)[5] <- "max_created_at"
+status_id_new <- rbind(status_id, status_id_new)
+status_id_new <- sqldf("SELECT * FROM status_id_new 
+      GROUP BY user_id")
+## borramos la vieja:
+status_id_v2 <- mongo(collection = "status_id", # Data Table
+                      db = "CREC_db", # DataBase
+                      url = url_path, 
+                      verbose = TRUE)
+status_id_v2$drop()
+### sumamos la nueva:
+status_id_db <- mongo(collection = "status_id", # Data Table
+                      db = "CREC_db", # DataBase
+                      url = url_path, 
+                      verbose = TRUE)
+status_id_db$insert(status_id_new)
