@@ -14,6 +14,15 @@
   library(shinycssloaders)
   library(plotly)
   library(highcharter)
+  library(tidyverse)
+  library(stringi)
+  library(stringr)
+  library(tidytext)
+  library(RColorBrewer)
+  library(emo)
+  library(readxl)
+  
+
 rm(list=ls()) #borramos del environment todos los elementos
 
 ## nos conectamos a mongolite -----------------------------------------
@@ -21,6 +30,8 @@ url_path = 'mongodb+srv://xxxxxxxxxx:xxxxxxxxxx@cluster0.xxxxxxxxxx.mongodb.net/
 url_path_2 = 'mongodb+srv://xxxxxxxxxx:xxxxxxxxxx@cluster0.xxxxxxxxxx.mongodb.net/test' # hcdn
 url_path_3 = 'mongodb+srv://xxxxxxxxxx:xxxxxxxxxx@cluster0.xxxxxxxxxx.mongodb.net/test' # hcsm
 url_path_4 = 'mongodb+srv://xxxxxxxxxx:xxxxxxxxxx@cluster0.xxxxxxxxxx.mongodb.net/admin' #otros, prov
+
+# descargamos los datasets necesarios -------------------------------------
 
 # descargamos los datasets necesarios -------------------------------------
 
@@ -51,6 +62,7 @@ names(data_politicos)[3] <- "Descripción"
 names(data_politicos)[6] <- "Organismo"
 names(data_politicos)[11] <- "Imagen"
 
+n <- 1
 
 
 
@@ -86,10 +98,9 @@ valueBox <- function(value, subtitle, icon, color) {
 ui <- fluidPage(
   theme = shinytheme("yeti"),
   # Application title
-  navbarPage("Observatorio de Redes",
+  navbarPage("Observatorio de redes",
              
              # Descargá los tweets -----------------------------------------------------
-             
              
              tabPanel("Descarga los tweets!", 
                       sidebarLayout(
@@ -98,17 +109,26 @@ ui <- fluidPage(
                           radioButtons(inputId='tipo_organismo', 
                                        label=h3('Selección de Organismo'), 
                                        choiceValues = unique(data_politicxs$Tipo_organismo), 
-                                       choiceNames = c("Diputadxs Nacionales", "Funcionarixs Provinciales", "Senadorxs Nacionales",  
-                                                       "Otrxs",  "Poder Ejecutivo Nacional" ),
+                                       choiceNames = c("Diputados/as Nacionales", 
+                                                       "Funcionario/as Provinciales", 
+                                                       "Senadores Nacionales",  
+                                                       "Figuras públicas",  
+                                                       "Poder Ejecutivo Nacional" ),
                                        selected = NULL), ### SELECCIONAR -
-                          
                           ### WIDGET 2 --> descargá
                           
                           uiOutput("seleccion_usuario"),
-                          downloadButton('download',"Download the data")
+                          br(),
+                          div(shiny::HTML("<h3>Descargá la data:</h3> "),
+                          downloadButton('downloadcsv',"CSV"), 
+                          downloadButton('downloadxlsx',"XLSX" )),
+                          
+                          helpText("Aclaración: este es un repositorio donde se almacenan tweets de personajes destacados de la politica nacional. 
+                          Podes descargar los tweets eligiendo el organismo al que pertenece, el usuario seleccionado y 
+                          apretando el botón correspondiente en
+                          'Descargá la data' según si se desea un excel o un csv")
                           
                         ),
-                        
                         # Show a plot of the generated distribution
                         mainPanel(
                           dataTableOutput("data_base")
@@ -123,11 +143,19 @@ ui <- fluidPage(
              tabPanel("Visualiza!", sidebarLayout(
                sidebarPanel(
                  ### WIDGET 1 --> text
-                 radioButtons(inputId='tipo_organismo', 
+                 
+                 
+                 ### WIDGET 2 --> descargá
+                 
+
+                 radioButtons(inputId='tipo_organismo2', 
                               label=h3('Selección de Organismo'), 
                               choiceValues = unique(data_politicxs$Tipo_organismo), 
-                              choiceNames = c("Diputadxs Nacionales", "Funcionarixs Provinciales", "Senadorxs Nacionales",  
-                                              "Otrxs",  "Poder Ejecutivo Nacional" ),
+                              choiceNames = c("Diputados/as Nacionales", 
+                                              "Funcionario/as Provinciales", 
+                                              "Senadores Nacionales",  
+                                              "Figuras públicas",  
+                                              "Poder Ejecutivo Nacional" ),
                               selected = NULL), ### SELECCIONAR -
                  
                  ### WIDGET 2 --> descargá
@@ -148,16 +176,13 @@ ui <- fluidPage(
                                       icon = "retweet",
                                       color = alpha(colour = "#31C485", alpha = 0.3 )),
                            
-                           
                            valueBox(value = "followers",
                                     subtitle = "cantidad de followers",
                                     icon = "user-friends", 
                                     color = alpha(colour = "#79E7FB", alpha = 0.3 )),
-                             )
-                           )
+                             ),
                     
-                 ),
-             
+                  
              
              # Frontpage - tweet volume plots - start ----------------------------------
              
@@ -167,15 +192,23 @@ ui <- fluidPage(
                  width = 12,
                  tabPanel(
                    status = "primary",
-                   title = " Progreso en Tweets",
-                   withSpinner(plotlyOutput("plot_hourly_tweet_volume", height = "250px"))
+                   title = "Cantidad de Interacciones",
+                   br(),
+                   withSpinner(plotlyOutput("plot_rt_favs_progress", height = "300px"))
                  ),
                  tabPanel(
                    status = "success",
-                   title = "Cantidad de tweets por hora",
-                   withSpinner(plotlyOutput("plot_tweets_by_hour", height = "250px"))
-                 )
-               )
+                   title = "Cantidad de seguidores",
+                   br(),
+                   withSpinner(plotlyOutput("plot_followers", height = "300px"))
+                 ), 
+                 tabPanel(
+                   status = "success_2",
+                   title = "Wordcloud",
+                   br(),
+                   withSpinner(wordcloud2Output("wordcloud", height = "300px")))
+                 ))
+             )
              )
              ),
             # Frontpage - tweet volume plots - end ------------------------------------
@@ -193,9 +226,12 @@ ui <- fluidPage(
                                             </center>"),
                         style = "height:150px;"),
                       fluidRow(
-                        div(align = "center",
-                            tags$span(h4("Este proyecto surge como una iniciativa conjunta del Observatorio de Redes y la Fundación Democracia en Red, con el apoyo del National Democratic Institute, con el fin de mejorar la calidad democrática, a través de la provisión de datos y contenidos publicados por actores de la vida pública, política institucional para que puedan ser analizados."), 
-                                      style = "font-weight:bold", style = "100px"))),
+                        div(align = "center", height='35', width='35',
+                            tags$span(h4("Este proyecto surge como una iniciativa conjunta del Observatorio de Redes y la Fundación Democracia en Red, 
+                                         con el apoyo del National Democratic Institute, con el fin de mejorar la calidad democrática, 
+                                         a través de la provisión de datos y contenidos publicados por actores de la vida pública, política institucional para que puedan ser analizados."), 
+                                     # style = "font-weight:bold", style = "100px", 
+                                      height='35', width='35'))),
                       #logos
                   
                   br(), 
@@ -386,7 +422,7 @@ server <- function(input, output) {
   
   
   ## boton de descargq    
-  output$download <- downloadHandler(
+  output$downloadcsv <- downloadHandler(
     filename = function(){paste0(input$user_name, "_database.csv")}, 
     content = function(fname){
       my_query <- mongo(collection = paste0(input$user_name),
@@ -399,6 +435,20 @@ server <- function(input, output) {
     }
   )
   
+  output$downloadxlsx <- downloadHandler(
+    filename = function(){paste0(input$user_name, "_database.xlsx")}, 
+    content = function(fname){
+      my_query <- mongo(collection = paste0(input$user_name),
+                        db = paste0(data_politicxs[data_politicxs$screen_name == input$user_name, 'database']), 
+                        url = paste0(data_politicxs[data_politicxs$screen_name == input$user_name, 'url_path']), 
+                        verbose = TRUE)
+      database <- my_query$find(query = '{}')   
+      database <- database %>% arrange(desc(created_at))
+      write.xlsx(database, fname)
+    }
+  )
+  
+
   ####
   output$data_base <- DT::renderDataTable({
     DT::datatable(data_politicos[, c(11, 2, 3, 6)], escape = FALSE) # HERE
@@ -408,7 +458,7 @@ server <- function(input, output) {
   
   output$seleccion_usuario_2 <- renderUI({
     selectInput(inputId="user_name_2", h3("Seleccionar el usuario"), 
-                choices = unique(data_politicxs[data_politicxs$Tipo_organismo == input$tipo_organismo, 'screen_name']), ### SELECCIONAR database
+                choices = unique(data_politicxs[data_politicxs$Tipo_organismo == input$tipo_organismo2, 'screen_name']), ### SELECCIONAR database
                 selected = 1
     )
   })
@@ -455,73 +505,65 @@ server <- function(input, output) {
   })
   
   
-  output$plot_hourly_tweet_volume <- renderPlotly({
-    df.filt2() %>%
-      tweets_just(created_at, is_topic) %>%
-      group_by(is_topic) %>%
-      tweets_volume() %>%
-      mutate(topic = if_else(is_topic, "topic", "all")) %>%
-      ungroup() %>%
-      rename(Date = by_time) %>%
-      select(-is_topic) %>%
-      spread(topic, n, fill = 0) %>%
-      plot_ly(x = ~ Date) %>%
-      add_lines(y = ~topic, name = TOPIC$name, color = I(ADMINLTE_COLORS$teal)) %>%
-      {
-        if (!is.null(TOPIC$full_community)) {
-          add_lines(., y = ~all, name = TOPIC$full_community, color = I(ADMINLTE_COLORS$purple))
-        } else .
-      }%>%
-      config(displayModeBar = FALSE) %>%
-      layout(
-        xaxis = list(
-          range = c(now(tz_global()) - days(7), now(tz_global())),
-          rangeselector = list(
-            buttons = list(
-              list(
-                count = 1,
-                label = "Today",
-                step = "day",
-                stepmode = "todate"),
-              list(
-                count = 1,
-                label = "Yesterday",
-                step = "day",
-                stepmode = "backward"),
-              list(
-                count = 7,
-                label = "Week",
-                step = "day",
-                stepmode = "backward"),
-              list(step = "all", label = "All"))),
-          rangeslider = list(type = "date")),
-        yaxis = list(title = "Tweets"),
-        legend = list(orientation = 'h', x = 0.05, y = 0.9),
-        hovermode = "compare" # thanks: https://stackoverflow.com/a/46733461/2022615
-      ) %>%
-      config(collaborate = FALSE, cloud = FALSE, mathjax = NULL)
+  output$plot_rt_favs_progress <- renderPlotly({
+    df_rtfav <- df.filt2()  %>%
+      filter(is_retweet == F) %>%
+      select(created_at, retweet_count, favorite_count) %>%
+      mutate(retweet_count = as.numeric(as.character(retweet_count)), 
+             favorite_count = as.numeric(as.character(favorite_count) ), 
+             created_at = as.Date(created_at)) 
+    
+    plot_ly(x = df_rtfav$created_at, y = df_rtfav$favorite_count, name = "Favoritos",
+            type="scatter", mode="lines",line = list(color = '#fe435c', shape = "spline")) %>%
+      add_trace( x = df_rtfav$created_at, y = df_rtfav$retweet_count, name = "Rtweets",
+                 type="scatter", mode="lines",line = list(color = '#31C485', shape = "spline")) %>%
+      layout( title = paste0("Evolución en la cantidad de interacciones de ", input$user_name_2), 
+              xaxis = list(title = "Fecha") ,
+              yaxis = list(title = "Cantidad"))
+    
+
   })
   
-  output$plot_tweets_by_hour <- renderPlotly({
-    tweets() %>%
-      tweets_just(created_at, is_topic) %>%
-      tweets_by_time(by = "1 hour") %>%
-      mutate(hour = hour(by_time)) %>%
-      group_by(hour, is_topic) %>%
-      count() %>%
-      ungroup() %>%
-      mutate(topic = if_else(is_topic, "topic", "all")) %>%
-      select(-is_topic) %>%
-      spread(topic, n, fill = 0) %>%
-      plot_ly(x = ~hour) %>%
-      add_bars(y = ~topic, name = TOPIC$name, color = I(ADMINLTE_COLORS$teal)) %>%
-      config(displayModeBar = FALSE) %>%
-      layout(
-        yaxis = list(title = "Tweets"),
-        xaxis = list(title = glue::glue("Hour of the Day ({TZ_GLOBAL})")),
-        hovermode = "compare" # thanks: https://stackoverflow.com/a/46733461/2022615
-      )
+output$plot_followers <- renderPlotly({
+  df3 <- df.filt3()  %>%
+    filter(date >="2021-01-23" & screen_name == input$user_name_2) %>%
+    select(date, followers_count, friends_count  ) %>%
+    mutate(friends_count = as.numeric(as.character(friends_count)), 
+           followers_count = as.numeric(as.character(followers_count) ))
+  
+    plot_ly(x = df3$date, y = df3$followers_count, name = "Seguidores",
+            type="scatter", mode="lines",line = list(color = '#38bff5', shape = "spline")) %>%
+    add_trace( x = df3$date, y = df3$friends_count, name = "Seguidos",
+               type="scatter", mode="lines",line = list(color = '#b575ff', shape = "spline")) %>%
+    layout( title = paste0("Evolución en la cantidad de Followers y Friends de ", input$user_name_2), 
+    xaxis = list(title = "Fecha") ,
+    yaxis = list(title = "Cantidad"))
+  
   })
+
+  output$wordcloud <- renderWordcloud2({
+    
+    stop_words_es <- read.table("https://github.com/Alir3z4/stop-words/raw/master/spanish.txt")
+    names(stop_words_es)[1] <- "word"
+     df.filt2() %>%
+      mutate(text = str_remove_all(text, "&amp;|&lt;|&gt;"),
+             text = str_remove_all(text, "\\s?(f|ht)(tp)(s?)(://)([^\\.]*)[\\.|/](\\S*)"),
+             text = str_remove_all(text, "[^\x01-\x7F]")) %>% 
+      unnest_tokens(word, text, token = "tweets") %>%
+      filter(!word %in% stop_words_es$word,
+             !word %in% str_remove_all(stop_words_es$word, "'"),
+             str_detect(word, "[a-z]"),
+             !str_detect(word, "^#"),         
+             !str_detect(word, "@\\S+")) %>%
+      filter(!word %in% stop_words$word,
+             !word %in% str_remove_all(stop_words$word, "'"),
+             str_detect(word, "[a-z]"),
+             !str_detect(word, "^#"),         
+             !str_detect(word, "@\\S+")) %>%
+      count(word, sort = TRUE) %>%
+       wordcloud2(color = brewer.pal(8, "Dark2")  #size=input$size
+               )
+    })
   
 }
 
