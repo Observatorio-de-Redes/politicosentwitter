@@ -49,8 +49,9 @@ url_path_2 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb
 url_path_3 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcsm
 url_path_4 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #otros, prov
 
-#Cargamos los datasets necesarios -----------------------------------------
+options(scipen = 9999)
 
+#Cargamos los datasets necesarios -----------------------------------------
 ### name_columns ------
 name_columns <- mongo(collection = "name_columns", # Data Table
                       db = "configuration_db", # DataBase
@@ -67,6 +68,7 @@ lista_politicxs <- mongo(collection = "lista_politicxs", # Data Table
                          verbose = TRUE)
 lista_politicxs <- lista_politicxs$find(query = '{}')
 
+
 ### cargamos el status  ------
 status_id_hist <- mongo(collection = "status_id", # Data Table
                         db = "CREC_db", # DataBase
@@ -75,7 +77,6 @@ status_id_hist <- mongo(collection = "status_id", # Data Table
 status_id <- status_id_hist$find(query = '{}')
 
 ### VAMOS A TENER QUE HACER UNA LISTA PARA CADA TIPO DE ORGANISMO ------
-
 ### PEN ----------------------------------------------------------------
 
 data_pen <- name_columns
@@ -83,23 +84,22 @@ d <- as.data.frame(lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user
 names(d)[1] <- "user_id"
 d <- d[-c(1:5), ]
 pen_def <- data_pen
+
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
    l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
-   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
    st_id  <- status_id[status_id$user_id == i,"status_id"]
    
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
       df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
-      
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_pen <- rbind(data_pen, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -111,8 +111,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
       data_pen <- rbind(data_pen, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -120,19 +120,18 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
    }
    
    j <- j + 1  
-   print(j)
-   
-}
-save(data_pen, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_pen_", 
-                             Sys.Date(),".RData")) 
 
+}
+save(data_pen, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_pen_/data_pen_", 
+                             Sys.Date(),".RData")) 
+Sys.sleep(960) 
 
 # OTRXS -------------------------------------------------------------------
+
 data_otrxs <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) {
    l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
-   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
    st_id  <- status_id[status_id$user_id == i,"status_id"]
    
    if(j%%151 == 0) {
@@ -145,8 +144,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
       
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_4, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -158,8 +157,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
       data_otrxs <- rbind(data_otrxs, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_4, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -167,11 +166,11 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
    }
    
    j <- j + 1  
-   print(j)
-   
+
 }
-save(data_otrxs, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_otrxs_", 
+save(data_otrxs, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_otrxs_/data_otrxs_", 
                                Sys.Date(),".RData")) 
+Sys.sleep(960) 
 
 
 # PROVINCIAL --------------------------------------------------------------
@@ -180,8 +179,7 @@ data_prov <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_id"]) {
    l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
-   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
-   st_id  <- status_id[status_id$user_id == i,"status_id"]
+   st_id  <- status_id[status_id$user_id == i,"status_id"] 
    
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
@@ -192,8 +190,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
       
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_4, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -205,8 +203,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
       data_prov <- rbind(data_prov, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_4, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -214,12 +212,13 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
    }
    
    j <- j + 1  
-   print(j)
-   
+
 }
-save(data_prov, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_prov_", 
+
+save(data_prov, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_prov_/data_prov_", 
                               Sys.Date(),".RData")) 
 
+Sys.sleep(960) 
 
 # HCDN --------------------------------------------------------------------
 
@@ -227,21 +226,19 @@ data_hcdn <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) {
    l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
-   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
    st_id  <- status_id[status_id$user_id == i,"status_id"]
    
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
       df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
-      
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
-      data_hcdn <- rbind(data_hcdn, df_timeline)
       
+      data_hcdn <- rbind(data_hcdn, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_2, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -253,8 +250,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) 
       data_hcdn <- rbind(data_hcdn, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_2, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -262,13 +259,13 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) 
    }
    
    j <- j + 1  
-   print(j)
-   
-}
-save(data_hcdn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hcdn_", 
-                              Sys.Date(),".RData")) 
-                              
 
+}
+
+save(data_hcdn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hcdn_/data_hcdn_", 
+                              Sys.Date(),".RData")) 
+
+Sys.sleep(960) 
 
 # HSN ---------------------------------------------------------------------
 
@@ -276,21 +273,19 @@ data_hsn <- name_columns
 j = 1
 for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
    l <- lista_politicxs[lista_politicxs$user_id == i,"screen_name"]
-   h <- lista_politicxs[lista_politicxs$user_id == i,"database"]
    st_id  <- status_id[status_id$user_id == i,"status_id"]
    
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
       df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
-      
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_hsn <- rbind(data_hsn, df_timeline)
       
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_3, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -302,8 +297,8 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
       data_hsn <- rbind(data_hsn, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
       my_query <- mongo(collection = l, # Data Table
-                        db = h, # DataBase
-                        url = url_path_3, 
+                        db = lista_politicxs[lista_politicxs$user_id == i,"database"], # DataBase
+                        url = lista_politicxs[lista_politicxs$user_id == i,"url_path"], 
                         verbose = TRUE)
       my_query$insert(df_timeline)
       rm(my_query, df_timeline)
@@ -311,36 +306,79 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
    }
    
    j <- j + 1  
-   print(j)
-   
 }
-save(data_hsn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hsn_", 
+save(data_hsn, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_hsn_/data_hsn_", 
                              Sys.Date(),".RData")) 
 
+
 # DATA CRECIMIENTO --------------------------------------------------------------------
+
 data_crecimiento <- rbind(data_pen, data_prov, data_otrxs, data_hsn, data_hcdn)
+
+df_search_f <- name_columns
+j=1
+for(i in lista_politicxs$user_id) {
+   f=i
+   if(!(f %in% unique(data_crecimiento$user_id))) {
+      if(j%%151 == 0) {
+         print ('Waiting 15 min...')
+         Sys.sleep(960) 
+         df_search_1  <- get_timeline(i, n = 1, token = token, retryonratelimit = T)
+         df_search_1 <- data.frame(lapply(df_search_1, as.character), stringsAsFactors=FALSE)
+         df_search_f <- rbind(df_search_1, df_search_f)
+         j=j+1
+      } 
+      else{
+         df_search_1  <- get_timeline(i, n = 1, token = token)
+         df_search_1 <- data.frame(lapply(df_search_1, as.character), stringsAsFactors=FALSE)
+         df_search_f <- rbind(df_search_1, df_search_f)
+         j=j+1
+         
+      }
+   }
+   else {
+      print('What a great day!')
+   }
+}
+
 ## DATA CREC --------------------------------------------------------------------
 data_crec <- data_crecimiento
-data_crec <- data_crec[, c(1, 4, 73:85)]
+data_crec <- data_crec[, c("user_id", "screen_name", "name", "location", "description", "url", "protected", "followers_count",   
+                           "friends_count","listed_count","statuses_count","favourites_count",  
+                           "account_created_at", "verified","profile_url")]
+df_search_f_crec <-df_search_f[, c("user_id", "screen_name", "name", "location", "description", "url", "protected", "followers_count",   
+                                   "friends_count","listed_count","statuses_count","favourites_count",  
+                                   "account_created_at", "verified","profile_url")]
 data_crec$date <- Sys.Date()
+df_search_f_crec$date <- Sys.Date()
+data_crec <- rbind(data_crec, df_search_f_crec)
 data_crec <- data.frame(lapply(data_crec, as.character), stringsAsFactors=FALSE)
 data_crec <- sqldf("select * from data_crec GROUP BY screen_name")
-save(data_crec, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_crec", 
-                             Sys.Date(),".RData")) 
+save(data_crec, file = paste0("D:/Guada/Research/poltweet/data_diaria/data_crec/data_crec", 
+                              Sys.Date(),".RData")) 
 my_query <- mongo(collection = "data_crec", # Data Table
                   db = "CREC_db", # DataBase
                   url = url_path, 
                   verbose = TRUE)
-my_query$insert(data_crec)
+my_query$insert(data_crec_dup)
+
 
 # STATUS ID --------------------------------------------------------------------
-status_id_new <- data_crecimiento[, c(1, 2, 3, 4)]
+
+status_id_new <- data_crecimiento[, c("user_id", "status_id", "created_at", "screen_name")]
+status_id_new$date <- Sys.Date()
 status_id_new <- sqldf("SELECT *, MAX(created_at) as max_created_at FROM status_id_new 
       GROUP BY user_id")
-names(status_id)[5] <- "max_created_at"
-status_id_new <- rbind(status_id, status_id_new)
-status_id_new <- sqldf("SELECT * FROM status_id_new 
-      GROUP BY user_id")
+#podemos hacer un filtro doble 
+
+df_search_f_st<- df_search_f[, c("user_id", "status_id", "created_at", "screen_name")]
+df_search_f_st$date <- Sys.Date()
+df_search_f_st$max_created_at <- Sys.Date()
+names(df_search_f_st)
+names(status_id_new)
+
+status_id_new <- rbind(status_id_new, df_search_f_st)
+
 ## borramos la vieja:
 status_id_v2 <- mongo(collection = "status_id", # Data Table
                       db = "CREC_db", # DataBase
@@ -353,3 +391,4 @@ status_id_db <- mongo(collection = "status_id", # Data Table
                       url = url_path, 
                       verbose = TRUE)
 status_id_db$insert(status_id_new)
+
