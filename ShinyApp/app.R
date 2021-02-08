@@ -33,8 +33,6 @@ url_path_4 = 'mongodb+srv://xxxxxxxxxx:xxxxxxxxxx@cluster0.xxxxxxxxxx.mongodb.ne
 
 # descargamos los datasets necesarios -------------------------------------
 
-# descargamos los datasets necesarios -------------------------------------
-
 ## lista_politicxs ------
 
 my_data <- mongo(collection = "lista_politicxs", # Data Table
@@ -50,17 +48,17 @@ data_crec_db <- mongo(collection = "data_crec", # Data Table
                       verbose = TRUE)
 data_crec <- data_crec_db$find(query = '{}')
 
-my_query <- mongo(collection = "data_politicos",
-                  db = "configuration_db", 
+my_query <- mongo(collection = "count_descargas", # Data Table
+                  db = "configuration_db", # DataBase
                   url = url_path, 
                   verbose = TRUE)
-data_politicos <- my_query$find(query = '{}')
+count <- my_query$find(query = '{}')
 
-
-names(data_politicos)[2] <- "Usuario"
-names(data_politicos)[3] <- "Descripción"
-names(data_politicos)[6] <- "Organismo"
-names(data_politicos)[11] <- "Imagen"
+# my_query <- mongo(collection = "data_politicos",
+#                   db = "configuration_db", 
+#                   url = url_path, 
+#                   verbose = TRUE)
+# data_politicos <- my_query$find(query = '{}')
 
 n <- 1
 
@@ -107,13 +105,14 @@ ui <- fluidPage(
                         sidebarPanel(
                           ### WIDGET 1 --> text
                           radioButtons(inputId='tipo_organismo', 
-                                       label=h3('Selección de Organismo'), 
-                                       choiceValues = unique(data_politicxs$Tipo_organismo), 
-                                       choiceNames = c("Diputados/as Nacionales", 
-                                                       "Funcionario/as Provinciales", 
-                                                       "Senadores Nacionales",  
-                                                       "Figuras públicas",  
-                                                       "Poder Ejecutivo Nacional" ),
+                                       label=h3('Selección de Categorias'), 
+                                       choiceValues = unique(data_politicxs$Tipo_organismo_2), 
+                                       choiceNames = c("Tod@s", "Senadores Nacionales",
+                                                       "Funcionario/as Provinciales",
+                                                       "Diputados/as Nacionales", 
+                                                       "Poder Ejecutivo Nacional",
+                                                       "Figuras públicas"  
+                                                        ),
                                        selected = NULL), ### SELECCIONAR -
                           ### WIDGET 2 --> descargá
                           
@@ -150,12 +149,13 @@ ui <- fluidPage(
 
                  radioButtons(inputId='tipo_organismo2', 
                               label=h3('Selección de Organismo'), 
-                              choiceValues = unique(data_politicxs$Tipo_organismo), 
-                              choiceNames = c("Diputados/as Nacionales", 
-                                              "Funcionario/as Provinciales", 
-                                              "Senadores Nacionales",  
-                                              "Figuras públicas",  
-                                              "Poder Ejecutivo Nacional" ),
+                              choiceValues = unique(data_politicxs$Tipo_organismo_2), 
+                              choiceNames = c("Tod@s", "Senadores Nacionales",
+                                              "Funcionario/as Provinciales",
+                                              "Diputados/as Nacionales", 
+                                              "Poder Ejecutivo Nacional",
+                                              "Figuras públicas"  
+                              ),
                               selected = NULL), ### SELECCIONAR -
                  
                  ### WIDGET 2 --> descargá
@@ -169,17 +169,17 @@ ui <- fluidPage(
                             valueBox(value = "favs",
                                      subtitle = "promedio de favs",
                                      icon = "heart",
-                                     color = alpha(colour = "#FE435C", alpha = 0.3 )),
+                                     color = alpha(colour = "#FE435C", alpha = 0.5 )),
                    
                             valueBox(value = "rtweet",
                                       subtitle = "promedio de rtweets",
                                       icon = "retweet",
-                                      color = alpha(colour = "#31C485", alpha = 0.3 )),
+                                      color = alpha(colour = "#31C485", alpha = 0.5 )),
                            
                            valueBox(value = "followers",
                                     subtitle = "cantidad de followers",
                                     icon = "user-friends", 
-                                    color = alpha(colour = "#79E7FB", alpha = 0.3 )),
+                                    color = alpha(colour = "#79E7FB", alpha = 0.5 )),
                              ),
                     
                   
@@ -396,7 +396,7 @@ ui <- fluidPage(
                         # finish ----------------------------------------------------------------
                         
                       )
-             )
+             ) # cierra aboutus
   )
 )
 
@@ -409,14 +409,14 @@ server <- function(input, output) {
 
 # primer tab --------------------------------------------------------------
   df.filt <- reactive({
-    df.filt=df[data_politicxs$Tipo_organismo==input$user_name,] 
+    df.filt=df[data_politicxs$Tipo_organismo_2==input$user_name,] 
     df.filt
   })
   
   output$seleccion_usuario <- renderUI({
     selectInput(inputId="user_name", h3("Seleccionar el usuario"), 
-                choices = unique(data_politicxs[data_politicxs$Tipo_organismo == input$tipo_organismo, 'screen_name']), ### SELECCIONAR database
-                selected = 1
+                choices = unique(data_politicxs[data_politicxs$Tipo_organismo_2 == input$tipo_organismo, 'screen_name']), ### SELECCIONAR database
+                selected = "SergioMassa"
     )
   })
   
@@ -451,15 +451,27 @@ server <- function(input, output) {
 
   ####
   output$data_base <- DT::renderDataTable({
-    DT::datatable(data_politicos[, c(11, 2, 3, 6)], escape = FALSE) # HERE
+    data_politicxs_table <- data_politicxs %>% 
+      filter(data_politicxs$Tipo_organismo_2 == input$tipo_organismo) %>% 
+      arrange(desc(as.numeric(followers_count))) %>%
+      rename( "Usuario" = screen_name, 
+                               "Descripción" = description,
+                                "Organismo" = Tipo_organismo,
+                                "Imagen" =image, 
+                                "Seguidores"=followers_count, 
+                                "some_names"=Nombre,
+                                "Nombre" =name) %>%
+      select('Imagen', Usuario, Nombre, Descripción, 'Seguidores', Organismo) 
+
+    DT::datatable(data_politicxs_table, escape = FALSE) # HERE
   })
   
 # segundo / visualizacion tab --------------------------------------------------------------
   
   output$seleccion_usuario_2 <- renderUI({
     selectInput(inputId="user_name_2", h3("Seleccionar el usuario"), 
-                choices = unique(data_politicxs[data_politicxs$Tipo_organismo == input$tipo_organismo2, 'screen_name']), ### SELECCIONAR database
-                selected = 1
+                choices =unique(data_politicxs[data_politicxs$Tipo_organismo_2 == input$tipo_organismo2, 'screen_name']), ### SELECCIONAR database
+                selected = "@SergioMassa"
     )
   })
   
@@ -481,8 +493,8 @@ server <- function(input, output) {
                           url = url_path, 
                           verbose = TRUE)
     data_crec_3 <- data_crec_db_3$find(query = '{}')
-    #df.filt3 <- data_crec_3[data_crec_3$screen_name == "alferdez", ]
     df.filt3 <- data_crec_3[data_crec_3$screen_name == input$user_name_2, ]
+    #df.filt3 <- data_crec_3[data_crec_3$screen_name == "alferdez", ]
     #df.filt3 <- data.frame(lapply(data_crec_3, as.character), stringsAsFactors=FALSE)
     df.filt3
   })
@@ -511,13 +523,14 @@ server <- function(input, output) {
       select(created_at, retweet_count, favorite_count) %>%
       mutate(retweet_count = as.numeric(as.character(retweet_count)), 
              favorite_count = as.numeric(as.character(favorite_count) ), 
-             created_at = as.Date(created_at)) 
+             created_at = as.Date(created_at)) %>%
+    arrange(created_at) 
     
     plot_ly(x = df_rtfav$created_at, y = df_rtfav$favorite_count, name = "Favoritos",
-            type="scatter", mode="lines",line = list(color = '#fe435c', shape = "spline")) %>%
+            type="scatter", mode="lines",line = list(color = alpha('#fe435c',alpha=0.5), shape = "spline")) %>%
       add_trace( x = df_rtfav$created_at, y = df_rtfav$retweet_count, name = "Rtweets",
-                 type="scatter", mode="lines",line = list(color = '#31C485', shape = "spline")) %>%
-      layout( title = paste0("Evolución en la cantidad de interacciones de ", input$user_name_2), 
+                 type="scatter", mode="lines",line = list(color = alpha('#31C485',alpha=0.5), shape = "spline")) %>%
+      layout( title = paste0("Evolución en la cantidad de interacciones de @", input$user_name_2), 
               xaxis = list(title = "Fecha") ,
               yaxis = list(title = "Cantidad"))
     
@@ -529,13 +542,14 @@ output$plot_followers <- renderPlotly({
     filter(date >="2021-01-23" & screen_name == input$user_name_2) %>%
     select(date, followers_count, friends_count  ) %>%
     mutate(friends_count = as.numeric(as.character(friends_count)), 
-           followers_count = as.numeric(as.character(followers_count) ))
+           followers_count = as.numeric(as.character(followers_count) )) %>%
+    arrange(date)
   
-    plot_ly(x = df3$date, y = df3$followers_count, name = "Seguidores",
-            type="scatter", mode="lines",line = list(color = '#38bff5', shape = "spline")) %>%
-    add_trace( x = df3$date, y = df3$friends_count, name = "Seguidos",
+    #plot_ly(x = df3$date, y = df3$followers_count, name = "Seguidores",
+    #        type="scatter", mode="lines",line = list(color = '#38bff5', shape = "spline")) %>%
+    plot_ly( x = df3$date, y = df3$friends_count, name = "Seguidos",
                type="scatter", mode="lines",line = list(color = '#b575ff', shape = "spline")) %>%
-    layout( title = paste0("Evolución en la cantidad de Followers y Friends de ", input$user_name_2), 
+    layout( title = paste0("Evolución en la cantidad de Followers y Friends de @", input$user_name_2), 
     xaxis = list(title = "Fecha") ,
     yaxis = list(title = "Cantidad"))
   
@@ -569,3 +583,4 @@ output$plot_followers <- renderPlotly({
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
