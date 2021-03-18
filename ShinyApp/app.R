@@ -31,11 +31,11 @@ rm(list=ls()) #borramos del environment todos los elementos
 options(scipen = 999)
 
 ## nos conectamos a mongolite -----------------------------------------
-url_path = 'mongodb+srv://guadag12:Ppincha777@cluster0.gxwrq.mongodb.net/admin' #pen,, config
-url_path_2 = 'mongodb+srv://guadag12:Ppincha777@cluster0.1b8mt.mongodb.net/test' # hcdn
-url_path_3 = 'mongodb+srv://guadag12:Ppincha777@cluster0.j59fq.mongodb.net/test' # hcsm
-url_path_4 = 'mongodb+srv://guadag12:Ppincha777@cluster0.mh1ca.mongodb.net/admin' #otros, prov
-url_path_5 = 'mongodb+srv://guadag12:Ppincha777@cluster0.bwilj.mongodb.net/test' # data net + data colors
+url_path = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
+url_path_2 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
+url_path_3 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/test' # hcsm
+url_path_4 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/admin' #otros, prov
+url_path_5 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/test' # data net + data colors
 
 # descargamos los datasets necesarios -------------------------------------
 
