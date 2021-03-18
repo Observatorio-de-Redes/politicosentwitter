@@ -1,4 +1,4 @@
-# Repositorio de tweets de Politicxs Argentinos 👨‍👩‍💼🔓
+# Repositorio de tweets de Politic@s Argentin@s 👨‍👩‍💼🔓
 
 
 _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuentas oficiales de organismos gubernamentales de la República Argentina🌎_
