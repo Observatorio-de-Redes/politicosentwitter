@@ -3,6 +3,10 @@
 
 _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuentas oficiales de organismos gubernamentales de la República Argentina🌎_
 
+* Mirá nuestra web[Web](http://politicosentwitter.com/)
+* Mirá el [repositorio](https://oderedes.shinyapps.io/oder)
+
+
 ### Descargá los tweets! 🔧
 
 
