@@ -31,7 +31,7 @@ Asimismo, puedes encontrar mucho más de cómo utilizar y analizar info de twitt
 _Es un proyecto realizado en el marco del [Observatorio de redes](https://twitter.com/O_de_R)_
 
 * **Juan Ignacio Belbis** - *Dirección y coordinación* - [juanibelbis](https://twitter.com/juanibelbis)
-* **Guadalupe Gonzalez** - *Trabajo y documentación* - [Guadag12](https://github.com/Guadag12)
+* **Guadalupe Gonzalez** - *Desarrollo y documentación* - [Guadag12](https://github.com/Guadag12)
 
 ## Si te gustó el proyecto o te resultó útil:
 
