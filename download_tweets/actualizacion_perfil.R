@@ -34,20 +34,20 @@ rm(list=ls()) #borramos del environment todos los elementos
 options(scipen = 999)
 
 ## nos conectamos a mongolite -----------------------------------------
-url_path = 'mongodb+srv://guadag12:Ppincha777@cluster0.gxwrq.mongodb.net/admin' #pen,, config
-url_path_2 = 'mongodb+srv://guadag12:Ppincha777@cluster0.1b8mt.mongodb.net/test' # hcdn
-url_path_3 = 'mongodb+srv://guadag12:Ppincha777@cluster0.j59fq.mongodb.net/test' # hcsm
-url_path_4 = 'mongodb+srv://guadag12:Ppincha777@cluster0.mh1ca.mongodb.net/admin' #otros, prov
-url_path_5 = 'mongodb+srv://guadag12:Ppincha777@cluster0.bwilj.mongodb.net/test' # data net + data colors
+url_path = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
+url_path_2 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
+url_path_3 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxx.mongodb.net/test' # hcsm
+url_path_4 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxxx.mongodb.net/admin' #otros, prov
+url_path_5 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxxxxxxx.mongodb.net/test' # data net + data colors
 
 options(RCurlOptions = list( capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
 reqURL<-"https://api.twitter.com/oauth/request_token"
 accessURL<-"https://api.twitter.com/oauth/access_token"
 authURL<-"https://api.twitter.com/oauth/authorize"
-consumerKey<-"c1ESC0DmMmBW8Xlh6L5CIRxCf" #clave que se da cuando se genera la app individual en Twitter
-consumerSecret<-"Xfd4FaKoAmRXPe1ZdwyaFdFxTfL4dAjQadx15GOQB9L536zpqZ" #Idem
-access_token <- "1670401616-8OgN0VexDFRIusAMU6XQn5qheb0ACWKQ1vebsiq"
-access_secret <- "3gv1OZJacS0Wb7lK1pSR0NnCMZvjeA2wUoltxSYgND3XS"
+consumerKey<-"xxxxx" #clave que se da cuando se genera la app individual en Twitter
+consumerSecret<-"xxxxx" #Idem
+access_token <- "xxxxx-xxxxx"
+access_secret <- "xxxxx"
 setup_twitter_oauth(consumerKey, consumerSecret, access_token, access_secret)
 1
 appname <- "Guadag"
