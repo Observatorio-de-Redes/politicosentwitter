@@ -82,7 +82,6 @@ data_net$month_year <- as.Date(data_net$month_year)
 
 # value boxes -------------------------------------------------------------
 ### bibliografia: ttps://www.r-bloggers.com/2018/06/valuebox-without-shinydashboard-2/
-
 valueBox <- function(value, subtitle, icon, color) {
   div(class = "col-lg-3 col-md-6",
       div(class = "panel panel-primary",
@@ -114,37 +113,37 @@ ui <- fluidPage(
   # Application title
   tags$head(HTML("<title>Politic@s en Twitter</title>")), #Without company logo
   navbarPage(selected = "hola",
-    title = div( img(src='https://github.com/Observatorio-de-Redes/poltweet/raw/main/ShinyApp/www/politicos-en-redes.jpg',
-                     style="margin-top: -14px; padding-right:10px;padding-bottom:10px", height = 60)),
-
-        tags$head(
-      # Note the wrapping of the string in HTML()
-      tags$style(HTML("
+             title = div( img(src='https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/politicos-en-redes.jpg',
+                              style="margin-top: -14px; padding-right:10px;padding-bottom:10px", height = 60)),
+             
+             tags$head(
+               # Note the wrapping of the string in HTML()
+               tags$style(HTML("
        .navbar  {
          background-color: #C6C6C6;
          color: #15202B;
        }
          .navbar-default {color: #C6C6C6;}
      ")),
-    ),
-    # tags$footer("Atribución 2.5 Argentina (CC BY 2.5 AR)", align = "center", style = "
-    #           position:absolute;
-    #           bottom:0;
-    #           width:100%;
-    #           height:30px;   /* Height of the footer */
-    #           color: #15202B;
-    #           padding: 10px;
-    #           z-index: 1000;"),
-
+             ),
+             # tags$footer("Atribución 2.5 Argentina (CC BY 2.5 AR)", align = "center", style = "
+             #           position:absolute;
+             #           bottom:0;
+             #           width:100%;
+             #           height:30px;   /* Height of the footer */
+             #           color: #15202B;
+             #           padding: 10px;
+             #           z-index: 1000;"),
+             
              # Descargá los tweets -----------------------------------------------------
              
              tabPanel(value = "hola", 
-             title = "Descargá", 
+                      title = "Descargá", 
                       sidebarLayout(
                         sidebarPanel(
                           ### WIDGET 1 --> text
                           radioButtons(inputId='tipo_organismo', 
-                                       label= h3('Seleccioná la Categoria:'), 
+                                       label= h4('Seleccioná la Categoria:'), 
                                        choiceValues = unique(data_politicxs$Tipo_organismo_2), 
                                        choiceNames = c("Tod@s","Diputados/as Nacionales", 
                                                        "Funcionario/as Provinciales",
@@ -156,16 +155,15 @@ ui <- fluidPage(
                           
                           uiOutput("seleccion_usuario"),
                           br(),
-                          div(shiny::HTML("<h3>Descargá la data*:</h3> "),
+                          div(shiny::HTML("<h4>Descargá la data*:</h4> "),
                               downloadButton('downloadcsv',"CSV"), 
                               downloadButton('downloadxlsx',"XLSX" )),
-                          a("*¿Qué información me trae esto?",target="_blank",href="https://github.com/Observatorio-de-Redes/poltweet/raw/main/ShinyApp/www/Descarga%20timelines%20de%20usuarios-5.pdf"),
+                          a("*¿Qué información me trae esto?",target="_blank",href="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/descarga_timeline_usuarios.pdf"),
                           
                           br(), 
                           br(),
-                          br(),
                           
-                          div(shiny::HTML("<h3>Descargá la data por categoria**:</h3> "),
+                          div(shiny::HTML("<h4>Descargá la data por categoria**:</h4> "),
                               withSpinner(downloadButton('downloadcsv_all',"CSV"))),
                           helpText('**Puede tardar entre 5 y 15 min esta descarga. Se recomienda evitar utilizar la categoria "Tod@s" porque puede demorar màs tiempo.')
                           
@@ -190,7 +188,7 @@ ui <- fluidPage(
                  
                  
                  radioButtons(inputId='tipo_organismo2', 
-                              label=h3('Seleccioná la Categoria:'), 
+                              label=h4('Seleccioná la Categoria:'), 
                               choiceValues = unique(data_politicxs$Tipo_organismo_2), 
                               choiceNames = c("Tod@s","Diputados/as Nacionales", 
                                               "Funcionario/as Provinciales",
@@ -252,15 +250,14 @@ ui <- fluidPage(
                            a(align = "right", 
                              "*¿Qué información me trae esto?",
                              target="_blank",
-                             href="https://github.com/Observatorio-de-Redes/poltweet/raw/main/ShinyApp/www/Descarga%20timelines%20de%20usuarios-5.pdf")),
-                           br(),
-                           br(), 
-                           br(),
+                             href="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/descarga_interacciones_usuaros.pdf")),
+                       br(),
+                       br(), 
                        div(align = "right",
                            shiny::HTML("<h4>Descargá la data para tod@s:</h4> "),
                            downloadButton('downloadcsv_all2',"CSV"))
-                       ), 
-                         
+                     ), 
+                     
                      tabPanel(
                        uiOutput("dateRange"),
                        status = "success_2",
@@ -279,25 +276,39 @@ ui <- fluidPage(
              )
              ),
              
+             
              tabPanel("Grafo", sidebarLayout(
                sidebarPanel(
                  uiOutput("dateRange_net"),
-                     div(
-                       tags$ul("Puntos a tener en consideración:",
-                               tags$li("Esta nube muestra la interacción de los usuarios descargados en esta app durante el periodo seleccionado en base a retweets."),
-                               tags$li("Entre más cercana al día de la fecha sea el periodo seleccionado, mayor será la cantidad de conexiones entre los usuarios, debido a reestricciones de descarga de la API de Twitter."),
-                               tags$li("El tamaño de los nodos responde a la cantidad de retweets obtenidos por el usuario y el color al sector político al que pertenecen."),
-                               tags$li("La actualización de esta nube es mensual -primero de cada mes- y los cambios observables en la misma también son mes a mes."),
-                               style="text-align:justify;color:black;background-color:#c6c6c6;padding:15px;border-radius:10px"),
-                       style="text-align:justify;color:black;background-color:#c6c6c6;padding:15px;border-radius:10px")
-                   ),
-                   mainPanel(
-                     withSpinner(visNetworkOutput("red_rt", height='700px',width='100%'))
-                   )
-                 )
-                 ),
-                 
-            
+                 br(),
+                 checkboxGroupInput("checkGroup", label = h4("Seleccioná las Categorias: "), 
+                                    choiceValues = unique(data_politicxs$Tipo_organismo_2), 
+                                    choiceNames = c("Tod@s",
+                                                    "Diputados/as Nacionales", 
+                                                    "Funcionario/as Provinciales",
+                                                    "Poder Ejecutivo Nacional",
+                                                    "Senadores Nacionales",
+                                                    "Otras figuras públicas"),
+                                    selected = "TODXS"),
+                 br(),
+                 helpText(
+                   tags$ul("Puntos a tener en consideración:",
+                           tags$li("Esta nube muestra la interacción de los usuarios descargados en esta app durante el periodo seleccionado en base a retweets."),
+                           tags$li("Entre más cercana al día de la fecha sea el periodo seleccionado, mayor será la cantidad de conexiones entre los usuarios, debido a reestricciones de descarga de la API de Twitter."),
+                           tags$li("El tamaño de los nodos responde a la cantidad de retweets obtenidos por el usuario y el color al sector político al que pertenecen."),
+                           tags$li("La actualización de esta nube es mensual -primero de cada mes- y los cambios observables en la misma también son mes a mes."),
+                         #  style="text-align:justify;color:black;background-color:#c6c6c6;padding:15px;border-radius:10px"
+                         ),
+                  # style="text-align:justify;color:black;background-color:#c6c6c6;padding:15px;border-radius:10px"
+                  )
+               ),
+               mainPanel(
+                 withSpinner(visNetworkOutput("red_rt", height='700px',width='100%'))
+               )
+             )
+             ),
+             
+             
              # Frontpage - tweet volume plots - end ------------------------------------
              
              
@@ -305,186 +316,9 @@ ui <- fluidPage(
              # about us ----------------------------------------------------------------
              
              
-             tabPanel("About us", 
-                      #conoce mas
-                      fluidRow(
-                        shiny::HTML("<br><center> 
-                                            <h1>Conocé más sobre el proyecto</h1> 
-                                            </center>"),
-                        style = "height:150px;"),
-                      fluidRow(
-                        div(align = "center", height='35', width='35',
-                            tags$span(h4("Este proyecto surge como una iniciativa conjunta del Observatorio de Redes y la Fundación Democracia en Red, 
-                                         con el apoyo del National Democratic Institute, con el fin de mejorar la calidad democrática, 
-                                         a través de la provisión de datos y contenidos publicados por actores de la vida pública, política institucional para que puedan ser analizados."), 
-                                      # style = "font-weight:bold", style = "100px", 
-                                      height='35', width='35'))),
-                      #logos
-                      
-                      br(), 
-                      br(),
-                      fluidRow(
-                        column(3),
-                        
-                        
-                        # logo oder ----------------------------------------------------------------
-                        column(2,
-                               div(class="panel panel-default", width = "700px", height = "200 px",
-                                   div(class="panel-body",  width = "700px", height = "200 px",
-                                       align = "center",
-                                       div(
-                                         tags$img(src = "http://pbs.twimg.com/profile_images/1225853061081387009/Wybte1kn_normal.jpg", 
-                                                  width = "80px", height = "80px")
-                                       ),
-                                       div(align="center",
-                                           tags$h5("Observatorio de redes"),
-                                           br(),
-                                           
-                                           column(6, tags$a(href='https://twitter.com/O_de_R',
-                                                            tags$img(src='https://images.vexels.com/media/users/3/137419/isolated/preview/b1a3fab214230557053ed1c4bf17b46c-logotipo-del-icono-de-twitter-by-vexels.png', 
-                                                                     height='35', width='35'))),
-                                           column(6,  tags$a(href="https://medium.com/@O_de_R",
-                                                             tags$img(src='https://w7.pngwing.com/pngs/549/715/png-transparent-web-development-logo-website-web-design-symmetry-internet-thumbnail.png', 
-                                                                      height='35', width='35')))
-                                       )
-                                   )
-                               )   ) ,
-                        # logo demo en red ----------------------------------------------------------------
-                        column(2,
-                               div(class="panel panel-default", width = "700px", height = "200 px",
-                                   div(class="panel-body",  width = "700px", height = "200 px",
-                                       align = "center",
-                                       div(
-                                         tags$img(src = "http://pbs.twimg.com/profile_images/706830818270953472/MLo55kE-_normal.jpg", 
-                                                  width = "80px", height = "80px")
-                                       ),
-                                       div(align="center",
-                                           tags$h5("Democracia en red"),
-                                           br(),
-                                           br(),
-                                           
-                                           
-                                           column(6,tags$a(href='https://twitter.com/fundacionDER',
-                                                           tags$img(src='https://images.vexels.com/media/users/3/137419/isolated/preview/b1a3fab214230557053ed1c4bf17b46c-logotipo-del-icono-de-twitter-by-vexels.png', 
-                                                                    height='35', width='35'))),
-                                           column(6,  tags$a(href="https://democraciaenred.org/",
-                                                             tags$img(src='https://w7.pngwing.com/pngs/549/715/png-transparent-web-development-logo-website-web-design-symmetry-internet-thumbnail.png', 
-                                                                      height='35', width='35')))
-                                       )
-                                   )
-                               )
-                        ), 
-                        
-                        # logo ndi ----------------------------------------------------------------
-                        
-                        column(2,
-                               div(class="panel panel-default", width = "700px", height = "200 px",
-                                   div(class="panel-body",  width = "700px", height = "200 px",
-                                       align = "center",
-                                       div(
-                                         tags$img(src = "http://pbs.twimg.com/profile_images/1338554872493465602/ociLHbh6_normal.jpg", 
-                                                  width = "80px", height = "80px")
-                                       ),
-                                       div(align="center",
-                                           tags$h5("National Democratic Institute"),
-                                           br(),
-                                           column(6,tags$a(href='https://twitter.com/NDI',
-                                                           tags$img(src='https://images.vexels.com/media/users/3/137419/isolated/preview/b1a3fab214230557053ed1c4bf17b46c-logotipo-del-icono-de-twitter-by-vexels.png', height='35', width='35'))),
-                                           column(6, tags$a(href="https://www.ndi.org/",
-                                                            tags$img(src='https://w7.pngwing.com/pngs/549/715/png-transparent-web-development-logo-website-web-design-symmetry-internet-thumbnail.png', 
-                                                                     height='35', width='35')))
-                                       )
-                                   )
-                               )
-                        )
-                        #cierre ----------------------------------------------------------------
-                        
-                      ),
-                      # sobre oder ----------------------------------------------------------------
-                      
-                      fluidRow(
-                        column(3),
-                        #column(3,
-                        
-                        h4("Este sitio está desarrollado en R y publicado en una Shiny App, los datos están almacenados en MongoDB Cloud. El código del repositorio lo pueden encontrar en",  
-                           a("Github", href = "https://github.com/Observatorio-de-Redes/poltweet"), ". Este trabajo está publicado bajo una licencia Atribución 2.5 Argentina (CC BY 2.5 AR).") 
-                        
-                        
-                        #  )
-                        ,
-                        column(3)
-                      ),
-                      
-                      fluidRow(
-                        column(3),
-                        # column(6,
-                        shiny::HTML("<br><br><center> <h2>Sobre el Observatorio de Redes</h2> </center><br>"),
-                        shiny::HTML("<h4>El Observatorio de Redes es una iniciativa multidisciplinaria de investigación aplicada,
-                               con el fin de experimentar 
-                                           y desarrollar metodologías innovadoras para la comprensión y el estudio de los
-                                           fenómenos públicos a través del análisis de redes.</h4>"), # sobre oder
-                        
-                        
-                        #        ),
-                        column(3) ),
-                      
-                      fluidRow(
-                        
-                        style = "height:50px;"),
-                      
-                      # juani & G ----------------------------------------------------------------
-                      
-                      fluidRow(align = "center",
-                               column(4),
-                               
-                               # juani ----------------------------------------------------------------
-                               column(2, align = "center",
-                                      div(class="panel panel-default", 
-                                          div(class="panel-body",  width = "700px",
-                                              align = "center",
-                                              div(
-                                                tags$img(src = "http://pbs.twimg.com/profile_images/1030022951754653697/8qORqeLb_normal.jpg", 
-                                                         width = "50px", height = "50px")
-                                              ),
-                                              div(
-                                                tags$h5("Juani Belbis"),
-                                                tags$h6( tags$i("Visionary & Project Lead"))
-                                              ),
-                                              div(align="center",
-                                                  column(6, tags$a(href='https://twitter.com/juanibelbis',
-                                                                   tags$img(src='https://images.vexels.com/media/users/3/137419/isolated/preview/b1a3fab214230557053ed1c4bf17b46c-logotipo-del-icono-de-twitter-by-vexels.png', height='35', width='35'))),
-                                                  column(6, tags$a(href="https://github.com/juanibelbis",
-                                                                   tags$img(src='https://image.flaticon.com/icons/png/512/25/25231.png', 
-                                                                            height='35', width='35')))
-                                              )   )   ) ),
-                               # guada ----------------------------------------------------------------
-                               column(2,align = "center",
-                                      div(class="panel panel-default",
-                                          div(class="panel-body",  width = "700px", 
-                                              align = "center",
-                                              div(
-                                                tags$img(src = "http://pbs.twimg.com/profile_images/1278038681668988934/dto344JK_normal.jpg", 
-                                                         width = "50px", height = "50px")
-                                              ),
-                                              div(
-                                                tags$h5("Guada Gonzalez"),
-                                                tags$h6( tags$i("Political Scientist & Data Scientist"))
-                                              ),
-                                              div(align="center",
-                                                  column(6, tags$a(href='https://twitter.com/guadag12',
-                                                                   tags$img(src='https://images.vexels.com/media/users/3/137419/isolated/preview/b1a3fab214230557053ed1c4bf17b46c-logotipo-del-icono-de-twitter-by-vexels.png', height='35', width='35'))),
-                                                  column(6,  tags$a(href="https://github.com/Guadag12",
-                                                                    tags$img(src='https://image.flaticon.com/icons/png/512/25/25231.png', 
-                                                                             height='35', width='35')))
-                                              )
-                                          )
-                                      )
-                               ),
-                               column(4),
-                               # finish ----------------------------------------------------------------
-                               
-                      )
-             ) # cierra aboutus
+             tabPanel("Conocé más", 
+                      column(6, includeHTML("https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/conocemas.html"))
+             )# cierra aboutus
   )
 )
 
@@ -503,7 +337,7 @@ server <- function(input, output) {
   })
   
   output$seleccion_usuario <- renderUI({
-    selectInput(inputId="user_name", h3("Seleccioná el usuario:"), 
+    selectInput(inputId="user_name", h4("Seleccioná el usuario:"), 
                 choices = sort(unique(data_politicxs[data_politicxs$Tipo_organismo_2 == input$tipo_organismo, 'screen_name'])), ### SELECCIONAR database
                 selected = "SergioMassa"
     )
@@ -573,31 +407,30 @@ server <- function(input, output) {
       
     }
   )
-  
 
+  
   
   ####
   output$data_base <- DT::renderDataTable({
-     data_politicxs_table <- data_politicxs %>% 
-       filter(data_politicxs$Tipo_organismo_2 == input$tipo_organismo) %>% 
-       arrange(desc(as.numeric(followers_count))) %>%
-       rename( "Usuario" = screen_name, 
-               "Descripción" = description,
-               "Organismo" = Tipo_organismo,
-               "Imagen" =image, 
-               "Seguidores"=followers_count, 
-               "some_names"=Nombre,
-               "Nombre" =name) %>%
-       select('Imagen', Usuario, Nombre, Descripción, 'Seguidores') 
-     
-  
+    data_politicxs_table <- data_politicxs %>% 
+      filter(data_politicxs$Tipo_organismo_2 == input$tipo_organismo) %>% 
+      arrange(desc(as.numeric(followers_count))) %>%
+      rename( "Usuario" = screen_name, 
+              "Descripción" = description,
+              "Organismo" = Tipo_organismo,
+              "Imagen" =image, 
+              "Seguidores"=followers_count, 
+              "Nombre" =name) %>%
+      select('Imagen', Usuario, Nombre, Descripción, 'Seguidores') 
+    
+    
     DT::datatable(data_politicxs_table, escape = FALSE) # HERE
   })
   
   # segundo / visualizacion tab --------------------------------------------------------------
   
   output$seleccion_usuario_2 <- renderUI({
-    selectInput(inputId="user_name_2", h3("Seleccioná el usuario:"), 
+    selectInput(inputId="user_name_2", h4("Seleccioná el usuario:"), 
                 choices = sort(unique(data_politicxs[data_politicxs$Tipo_organismo_2 == input$tipo_organismo2, 'screen_name'])), ### SELECCIONAR database
                 selected = "SergioMassa"
     )
@@ -632,7 +465,7 @@ server <- function(input, output) {
   output$downloadcsv_all2 <- downloadHandler(
     filename = function(){paste0( "todxs_interacciones_database.csv")},
     content = function(fname){
-        write.csv(data_crec, fname, row.names = F)}
+      write.csv(data_crec, fname, row.names = F)}
   )
   ### primer granito --> followes
   
@@ -814,18 +647,18 @@ server <- function(input, output) {
     fig <- plot_ly(df.emoji, x = ~emoji, y = ~n, type = 'bar', 
                    text =  ~emoji, textposition = 'auto', size = 14, 
                    marker = list(color = 'rgb(158,202,225)'))
-    fig <- fig %>% layout(title = list(title = "Emojis más frecuentes utilizados por",
-                                       titlefont = list(size = 28, color = "orange", family = "Calibri")),
-                          xaxis = list(title = "Emoji"),
-                          yaxis = list(title = "Cantidad"))
-    fig %>% layout(xaxis = list(categoryorder = "array", categoryarray = order(df.emoji$n))) 
+    fig <- fig %>% layout(xaxis = list(categoryorder = "array", categoryarray = order(df.emoji$n))) 
+    fig %>% layout(title = list(title = "Emojis más frecuentes utilizados por",
+                                titlefont = list(size = 28, color = "orange", family = "Arial")),
+                   xaxis = list(title = "Emoji"),
+                   yaxis = list(title = "Cantidad"))
     
   })
   
   output$dateRange_net <- renderUI(
     dateRangeInput('dateRange3',
                    label = shiny::HTML('<h4> Seleccioná el periodo de tiempo: </h4> '),
-                   start = "2020-09-01",  end = "2021-01-01",
+                   start =  max(data_net$month_year, na.rm = T)-89,  end = max(data_net$month_year, na.rm = T),
                    min = min(data_net$month_year, na.rm = T), 
                    max = max(data_net$month_year, na.rm = T),
                    separator = " - ", format = "yyyy-mm-dd",
@@ -834,8 +667,10 @@ server <- function(input, output) {
   
   
   data_net_reactive <- reactive({
-    data_net_reactive <- data_net[(data_net$month_year > as.Date(input$dateRange3[1])) & 
-                                    (data_net$month_year < as.Date(input$dateRange3[2])) , ]
+    lista <- unique(data_politicxs[data_politicxs$Tipo_organismo_2 %in% input$checkGroup, "user_id"])
+    data_net_reactive <- data_net[((data_net$month_year > as.Date(input$dateRange3[1])) & 
+                                     (data_net$month_year < as.Date(input$dateRange3[2]))) & 
+                                    ((data_net$user_id %in% lista) &  (data_net$user_id %in% lista)), ]
     
   })
   
@@ -874,8 +709,9 @@ server <- function(input, output) {
     links <- links[!is.na(links$to),]
     
     
-    visNetwork(nodes, links, main = paste0("Interaccion en Twitter desde el ",day(as.Date(input$dateRange3[1])),"-",month(as.Date(input$dateRange3[1])),"-", year(as.Date(input$dateRange3[1])),
-                                           " al ", day(as.Date(input$dateRange3[2])),"-",month(as.Date(input$dateRange3[2])),"-", year(as.Date(input$dateRange3[2])))) %>%
+    visNetwork(nodes, links, main = list(text = paste0('Interacción en Twitter desde el "',day(as.Date(input$dateRange3[1])),'-',month(as.Date(input$dateRange3[1])),'-', year(as.Date(input$dateRange3[1])),
+                                                       '" al "', day(as.Date(input$dateRange3[2])),'-',month(as.Date(input$dateRange3[2])),'-', year(as.Date(input$dateRange3[2])), '"'), 
+                                         style = "font-family:Arial;color:#15202b;font-size:20px;text-align:center;")) %>%
       visIgraphLayout() %>%
       visNodes(
         shape = "dot",
