@@ -1,5 +1,4 @@
-# Repository of tweets for Politicians in Argentina 👨‍👩‍💼🔓 / 
-# Repositorio de tweets de Politic@s Argentin@s 👨‍👩‍💼🔓
+# Repository of tweets for Politicians in Argentina 👨‍👩‍💼🔓 / Repositorio de tweets de Politic@s Argentin@s 👨‍👩‍💼🔓
 
 
 _Repository of tweets and retweets issued by officials, candidates and official accounts of government agencies of Argentine Republic🌎_ /
