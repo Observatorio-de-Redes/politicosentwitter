@@ -9,13 +9,13 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 
 
 
-### Download thw tweets! / Descargá los tweets! 🔧
+### Download the tweets! / Descargá los tweets! 🔧
 
 
 _Download the timelines of officials and carry out analysis! 📊_/ _Descargá los timelines de funcionarios y realizá análisis!📊_
 
 
-## Built with / Construido con 🛠️
+### Built with / Construido con 🛠️
 
 * [Rstudio](https://rstudio.com/) 
 * [rtweet package](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf)
@@ -23,19 +23,19 @@ _Download the timelines of officials and carry out analysis! 📊_/ _Descargá l
 * [Mongo db](https://www.mongodb.com/es)
 
 
-## See more! / Ver más! 📖
+### See more! / Ver más! 📖
 
 * With these tweets you can reproduce [this workshop](https://github.com/labpoliticasuba/Taller-de-Twitter) put together by the Public Policy Laboratory at the University of Aires / Con estos tweets podes reproducir [este taller](https://github.com/labpoliticasuba/Taller-de-Twitter) que armó el Laboratorio de Políticas Públicas en la Universidad de Aires!
 * Also, you can find much more about how to use and analyze twitter info in R [here](https://mkearney.github.io/nicar_tworkshop/#1) / Asimismo, puedes encontrar mucho más de cómo utilizar y analizar info de twitter en R [acá](https://mkearney.github.io/nicar_tworkshop/#1)
 
-## Authors / Autores ✒️
+### Authors / Autores ✒️
 
 _This project was made as part of the [Network Observatory](https://twitter.com/O_de_R))_ / _Es un proyecto realizado en el marco del [Observatorio de redes](https://twitter.com/O_de_R)_
 
 * **Juan Ignacio Belbis** - * Direction and coordination / Dirección y coordinación* - [juanibelbis](https://twitter.com/juanibelbis)
 * **Guadalupe Gonzalez** - *Development and documentation / Desarrollo y documentación* - [Guadag12](https://github.com/Guadag12)
 
-## If you liked the project or found it useful / Si te gustó el proyecto o te resultó útil:
+### If you liked the project or found it useful / Si te gustó el proyecto o te resultó útil:
 
 * Tell others about this project / Comenta a otros sobre este proyecto 📢
 
