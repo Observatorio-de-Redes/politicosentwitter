@@ -52,7 +52,7 @@ valueBox_3 <- function(value, subtitle, icon, color) {
                       icon(icon, "fa-5x")
                   ),
                   div(class = ("col-xs-5 text-right"),
-                      div(style = ("font-size: 20px; font-weight: bold;"),
+                      div(style = ("font-size: 17px; font-weight: bold;"),
                           textOutput(value)
                       ),
                       div(subtitle)
