@@ -9,13 +9,13 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 
 
 
-### Download thw tweets!🔧 / Descargá los tweets! 🔧
+### Download thw tweets! / Descargá los tweets! 🔧
 
 
 _Download the timelines of officials and carry out analysis! 📊_/ _Descargá los timelines de funcionarios y realizá análisis!📊_
 
 
-## Built with 🛠️ / Construido con 🛠️
+## Built with / Construido con 🛠️
 
 * [Rstudio](https://rstudio.com/) 
 * [rtweet package](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf)
