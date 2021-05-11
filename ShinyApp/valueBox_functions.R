@@ -97,17 +97,3 @@ valueBox_ndi <- function() {
   
 }
 
-valueBox_portada <- function() {
-  div(class = "col-lg-3 col-md-15",
-      div(class = "panel panel-primary",
-          div(class = "panel-heading", style = "background-color:#266099;"),
-          div(class = ("col-xs-5 text-right"),
-              div(style = ("font-size: 25px; font-weight: bold; font-color: white"),
-                  "Politic@s en Twitter for Argentina"
-              )
-          )
-      )
-  )
-  )
-
-}
