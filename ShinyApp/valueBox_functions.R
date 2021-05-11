@@ -30,7 +30,7 @@ valueBox_3 <- function(value, subtitle, icon, color) {
                       icon(icon, "fa-5x")
                   ),
                   div(class = ("col-xs-5 text-right"),
-                      div(style = ("font-size: 15px; font-weight: bold;"),
+                      div(style = ("font-size: 20px; font-weight: bold;"),
                           textOutput(value)
                       ),
                       div(subtitle)
@@ -49,7 +49,7 @@ valueBox_der <- function() {
           div(class = "panel-heading", style = paste0("background-color:#fcfdff"),
               div(class = "row"
               ),
-              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/DER.png",height="90%",align = "center",width="90%",style="display: block; ")
+              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/DER.png",height="85%",align = "center",width="85%",style="display: block; text-align: center;")
               )
               
               
@@ -61,14 +61,13 @@ valueBox_der <- function() {
   )
   
 }
-
 valueBox_oder <- function() {
   div(class = "col-lg-3 col-md-6",
       div(class = "panel panel-primary",
           div(class = "panel-heading", style = paste0("background-color:#fcfdff"),
               div(class = "row"
               ),
-              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/ODER-3.png",height="75%",align = "center",width="75%",style="display: block; align: center ")
+              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/ODER-3.png",height="60%",align = "center",width="60%",style="display: block;  text-align: center;")
               )
               
               
@@ -80,20 +79,19 @@ valueBox_oder <- function() {
   )
   
 }
-
 valueBox_ndi <- function() {
   div(class = "col-lg-3 col-md-6",
       div(class = "panel panel-primary",
           div(class = "panel-heading", style = paste0("background-color:#fcfdff"),
               div(class = "row"
               ),
-              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/NDI.png",height="80%",align = "center",width="90%",style="display: block; ")
-              )),
+              div( tags$img(src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/NDI.png",height="70%",align = "center",width="80%",style="display: block;  text-align: center; ")
+              ), br(),
+          ),
           div(class = "panel-footer",
               div(class = "clearfix")
-          )
+          ),
       )
   )
   
 }
-
