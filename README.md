@@ -31,8 +31,10 @@ _Download the timelines of officials and carry out analysis! 📊_/ _Descargá l
 
 _This project was made as part of the [Network Observatory](https://twitter.com/O_de_R))_ / _Es un proyecto realizado en el marco del [Observatorio de redes](https://twitter.com/O_de_R)_
 
-* **Juan Ignacio Belbis** - * Direction and coordination / Dirección y coordinación* - [juanibelbis](https://twitter.com/juanibelbis)
 * **Guadalupe Gonzalez** - *Development and documentation / Desarrollo y documentación* - [Guadag12](https://github.com/Guadag12)
+* **Juan Ignacio Belbis** - * Direction and coordination / Dirección y coordinación* - [juanibelbis](https://twitter.com/juanibelbis)
+* **Democracia en Red** -  [DER](https://twitter.com/fundacionDER)
+* **National Democractic Institute** - [NDI](https://twitter.com/NDI)
 
 ### If you liked the project or found it useful / Si te gustó el proyecto o te resultó útil:
 
