@@ -51,6 +51,12 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 (3) Social Networks is an interesting approach to see how the public policy is made behind the scenes. We can see the negotiations and anticipate movements from who retweeted each other. And even see the profile image of every node!
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 Last but not least, this website was developed by [Guadalupe Gonzalez](https://twitter.com/guadag12) but it couldn't be possible without the help of [**Network's Observatory team**](https://twitter.com/O_de_R) (especially his director, [Juani Belbis](https://twitter.com/juanibelbis)) and the participation of the foundation **"[Democracia en Red](https://twitter.com/fundacionDER)"** -which always is watching over for the transparency- and the financial contribution of **"[National Democratic Institute](https://twitter.com/NDI)"** and their constant compromise with democracy all over the world.
 
 
