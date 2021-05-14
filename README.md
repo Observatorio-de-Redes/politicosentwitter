@@ -50,13 +50,12 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
   
 (3) Social Networks is an interesting approach to see how the public policy is made behind the scenes. We can see the negotiations and anticipate movements from who retweeted each other. And even see the profile image of every node!
 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
 Last but not least, this website was developed by [Guadalupe Gonzalez](https://twitter.com/guadag12) but it couldn't be possible without the help of [**Network's Observatory team**](https://twitter.com/O_de_R) (especially his director, [Juani Belbis](https://twitter.com/juanibelbis)) and the participation of the foundation **"[Democracia en Red](https://twitter.com/fundacionDER)"** -which always is watching over for the transparency- and the financial contribution of **"[National Democratic Institute](https://twitter.com/NDI)"** and their constant compromise with democracy all over the world.
 
 
@@ -72,6 +71,7 @@ Last but not least, this website was developed by [Guadalupe Gonzalez](https://t
 
 * With these tweets you can reproduce [this workshop](https://github.com/labpoliticasuba/Taller-de-Twitter) put together by the Public Policy Laboratory at the University of Aires / Con estos tweets podes reproducir [este taller](https://github.com/labpoliticasuba/Taller-de-Twitter) que armó el Laboratorio de Políticas Públicas en la Universidad de Aires!
 * Also, you can find much more about how to use and analyze twitter info in R [here](https://mkearney.github.io/nicar_tworkshop/#1) / Asimismo, puedes encontrar mucho más de cómo utilizar y analizar info de twitter en R [acá](https://mkearney.github.io/nicar_tworkshop/#1)
+* See all the codes used for this app in [Rstudio Cloud](https://rstudio.cloud/project/2552738) / Mirá todos los códigos usados en esta app en [Rstudio Cloud](https://rstudio.cloud/project/2552738)
 
 ### Authors / Autores ✒️
 
