@@ -14,12 +14,11 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 This app could be described in three steps: (1) download all what you need, (2) check out the performance of an account over a period of time, (3) see how connected they are with social networks.
 
 (1) Open source it's the future: we firmly believe that what public servants tweet should be public information, so we decided to make an open repository with daily actualization to give people a sense of control. Also, this website is a tool for non programmers so they can download data for their own research without depending on pay services.
+  ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif)
 
-    ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif){width="416"}
+(2) This app will show descriptive statistics about an account (like the average of favourites and retweets and number of followers), but also it'll show the progress of the interactions of every tweet, the evolution in the number of followers, a wordcloud with the frequency of word on a period of time and the main emojis that the user writes. ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif2_def.gif)
 
-(2) This app will show descriptive statistics about an account (like the average of favourites and retweets and number of followers), but also it'll show the progress of the interactions of every tweet, the evolution in the number of followers, a wordcloud with the frequency of word on a period of time and the main emojis that the user writes. ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif2_def.gif){width="427"}
-
-(3) Social Networks is an interesting approach to see how the public policy is made behind the scenes. We can see the negotiations and anticipate movements from who retweeted each other. And even see the profile image of every node! ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif3_def.gif){width="413"}
+(3) Social Networks is an interesting approach to see how the public policy is made behind the scenes. We can see the negotiations and anticipate movements from who retweeted each other. And even see the profile image of every node! ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif3_def.gif)
 
 Last but not least, this website was developed by [Guadalupe Gonzalez](https://twitter.com/guadag12) but it couldn't be possible without the help of [**Network's Observatory team**](https://twitter.com/O_de_R) (especially his director, [Juani Belbis](https://twitter.com/juanibelbis)) and the participation of the foundation **"[Democracia en Red](https://twitter.com/fundacionDER)"** -which always is watching over for the transparency- and the financial contribution of **"[National Democratic Institute](https://twitter.com/NDI)"** and their constant compromise with democracy all over the world.
 
