@@ -10,15 +10,14 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 ---
 
 *Politicians on Twitter* is a dashboard that makes real time analysis about the performance on Twitter for more than 500 national public servants in Argentina with the possibility of downloading every tweet. We have decided to make this repository available to the community with open and reusable data to improve the production of knowledge and to keep an eye on what they tweet and delete.
-<img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/img%20def.png" width="250" height="250"/>
-
-![hola]()
+<img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/img%20def.png" width="500" height="1000"/>
 
 This app could be described in three steps: (1) download all what you need, (2) check out the performance of an account over a period of time, (3) see how connected they are with social networks.
 
 (1) Open source it's the future: we firmly believe that what public servants tweet should be public information, so we decided to make an open repository with daily actualization to give people a sense of control. Also, this website is a tool for non programmers so they can download data for their own research without depending on pay services.
-  
-  ![](https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif)
+  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif" width="500" height="1000"/>
+
+  ![]()
 
 (2) This app will show descriptive statistics about an account (like the average of favourites and retweets and number of followers), but also it'll show the progress of the interactions of every tweet, the evolution in the number of followers, a wordcloud with the frequency of word on a period of time and the main emojis that the user writes.
 
