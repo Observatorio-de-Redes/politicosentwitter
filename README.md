@@ -7,7 +7,10 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 
 ## Look at the [Shiny App](https://oderedes.shinyapps.io/oder)! / Mirá la [Shiny App](https://oderedes.shinyapps.io/oder)! ⬅️⬅️🤩
 
----
+
+<br/>
+<br/>
+
 <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/img%20def.png" width="500" height="250" align = "right" />
 
 
@@ -17,6 +20,9 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 
 
 
+<br/>
+
+<br/>
   <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif" width="500" height="250" align = "right"/>
 
 (1) Open source it's the future: we firmly believe that what public servants tweet should be public information, so we decided to make an open repository with daily actualization to give people a sense of control. Also, this website is a tool for non programmers so they can download data for their own research without depending on pay services.
@@ -29,6 +35,9 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 (2) This app will show descriptive statistics about an account (like the average of favourites and retweets and number of followers), but also it'll show the progress of the interactions of every tweet, the evolution in the number of followers, a wordcloud with the frequency of word on a period of time and the main emojis that the user writes.
 
 
+<br/>
+
+<br/>
 
   <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif3_def.gif" width="500" height="250" align = "right"/>
   
