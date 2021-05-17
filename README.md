@@ -5,7 +5,7 @@ _Repository of tweets and retweets issued by officials, candidates and official 
 _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuentas oficiales de organismos gubernamentales de la República Argentina🌎_
 
 <br/>
-## Look at the [Shiny App](https://oderedes.shinyapps.io/oder)! / Mirá la [Shiny App](https://oderedes.shinyapps.io/oder)! ⬅️⬅️🤩
+## Look at the [Shiny App](https://oderedes.shinyapps.io/politicosentwitter/)! / Mirá la [Shiny App](https://oderedes.shinyapps.io/politicosentwitter/)! ⬅️⬅️🤩
 
 
 <br/>
@@ -84,6 +84,7 @@ Last but not least, this website was developed by [Guadalupe Gonzalez](https://t
 * Tell others about this project / Comenta a otros sobre este proyecto 📢
 <br/>
 <br/>
+
 ## For any questions or queries, you can write to us at / Por cualquier duda o consulta, podes escribirnos a:
 * **Observatory Official Twitter / Twitter Oficial del Observatorio:** https://twitter.com/O_de_R
 * **Observatory Official Email / Email oficial del Observatorio:** observatorioderedes@gmail.com
