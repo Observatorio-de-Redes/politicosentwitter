@@ -34,36 +34,23 @@ rm(list=ls()) #borramos del environment todos los elementos
 options(scipen = 999)
 
 ## nos conectamos a mongolite -----------------------------------------
-url_path = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
-url_path_2 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
-url_path_3 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxx.mongodb.net/test' # hcsm
-url_path_4 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxxx.mongodb.net/admin' #otros, prov
-url_path_5 = 'mongodb+srv://xxxxx:xxxxx@cluster0.xxxxxxxxxx.mongodb.net/test' # data net + data colors
+url_path = 'mongodb+srv://new_user_db:password_new@cluster0.gxwrq.mongodb.net/test' #pen,, config
+url_path_2 = 'mongodb+srv://new_user_db:password_new@cluster0.1b8mt.mongodb.net/test' # hcdn
+url_path_3 = 'mongodb+srv://new_user_db:password_new@cluster0.j59fq.mongodb.net/test' # hcsm
+url_path_4 = 'mongodb+srv://new_user_db:password_new@cluster0.mh1ca.mongodb.net/test' #otros, prov
+url_path_5 = 'mongodb+srv://new_user_db:password_new@cluster0.bwilj.mongodb.net/test' # data net + data colors
 
-options(RCurlOptions = list( capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
-reqURL<-"https://api.twitter.com/oauth/request_token"
-accessURL<-"https://api.twitter.com/oauth/access_token"
-authURL<-"https://api.twitter.com/oauth/authorize"
-consumerKey<-"xxxxx" #clave que se da cuando se genera la app individual en Twitter
-consumerSecret<-"xxxxx" #Idem
-access_token <- "xxxxx-xxxxx"
-access_secret <- "xxxxx"
-setup_twitter_oauth(consumerKey, consumerSecret, access_token, access_secret)
-1
-appname <- "Guadag"
-token <- create_token(app =  appname, consumer_key = consumerKey , 
-                      consumer_secret = consumerSecret,
-                      access_token = access_token,
-                      access_secret = access_secret
-)
+# descargamos los datasets necesarios -------------------------------------
+
+## lista_politicxs ------
 
 
-
-my_data <- mongo(collection = "lista_politicxs", # Data Table
+my_data <- mongo(collection = "lista_politicxs_shiny", # Data Table
                  db = "configuration_db", # DataBase
                  url = url_path, 
                  verbose = TRUE)
-lista_politicxs <- my_data$find(query = '{}')
+data_politicxs <- my_data$find('{}')
+
 
 name_columns <- mongo(collection = "name_columns", # Data Table
                       db = "configuration_db", # DataBase
