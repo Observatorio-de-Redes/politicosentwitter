@@ -25,10 +25,13 @@ library(beepr)
 
 
 ## nos conectamos a mongolite -----------------------------------------
-url_path = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
-url_path_2 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcdn
-url_path_3 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/test' # hcsm
-url_path_4 = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #otros, prov
+url_path = 'mongodb+srv://new_user_db:password_new@cluster0.gxwrq.mongodb.net/test' #pen,, config
+url_path_2 = 'mongodb+srv://new_user_db:password_new@cluster0.1b8mt.mongodb.net/test' # hcdn
+url_path_3 = 'mongodb+srv://new_user_db:password_new@cluster0.j59fq.mongodb.net/test' # hcsm
+url_path_4 = 'mongodb+srv://new_user_db:password_new@cluster0.mh1ca.mongodb.net/test' #otros, prov
+url_path_5 = 'mongodb+srv://new_user_db:password_new@cluster0.bwilj.mongodb.net/test' # data net + data colors
+
+# descargamos los datasets necesarios -------------------------------------
 
 options(scipen = 9999)
 
@@ -43,7 +46,7 @@ name_columns <- pivot_wider(name_columns, names_from = columns, values_from = co
 name_columns <- name_columns[0, c(1:90)]
 
 ### lista_politicxs ------
-lista_politicxs <- mongo(collection = "lista_politicxs", # Data Table
+lista_politicxs <- mongo(collection = "lista_politicxs_shiny", # Data Table
                          db = "configuration_db", # DataBase
                          url = url_path, 
                          verbose = TRUE)
