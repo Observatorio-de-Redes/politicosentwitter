@@ -23,25 +23,6 @@ library(mongolite)
 library(beepr)
 library(beepr)
 
-# 2. Nos conectamos a la API de twitter
-#Conectarse a Twitter - para esto tienen que tener creada la aplicacion en TW#
-
-options(RCurlOptions = list( capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
-reqURL<-"https://api.twitter.com/oauth/request_token"
-accessURL<-"https://api.twitter.com/oauth/access_token"
-authURL<-"https://api.twitter.com/oauth/authorize"
-consumerKey<-"xxxxxxxxxxxxxx" #clave que se da cuando se genera la app individual en Twitter
-consumerSecret<-"xxxxxxxxxxxxxx" #Idem
-access_token <- "xxxxxxxxxxxxxx-xxxxxxxxxxxxxx"
-access_secret <- "xxxxxxxxxxxxxx"
-setup_twitter_oauth(consumerKey, consumerSecret, access_token, access_secret)
-
-appname <- "xxxxx"
-token <- create_token(app =  appname, consumer_key = consumerKey , 
-                      consumer_secret = consumerSecret,
-                      access_token = access_token,
-                      access_secret = access_secret
-)
 
 ## nos conectamos a mongolite -----------------------------------------
 url_path = 'mongodb+srv://xxxxxxxxxxxxxx:xxxxxxxxxxxxxx@cluster0.xxxxx.mongodb.net/admin' #pen,, config
@@ -93,7 +74,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_pen <- rbind(data_pen, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -106,7 +87,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PEN","user_id"]) {
    }
    
    else{
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_pen <- rbind(data_pen, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -137,7 +118,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200,  retryonratelimit = T, since_id = paste0(st_id))
       
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_otrxs <- rbind(data_otrxs, df_timeline)
@@ -152,7 +133,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "OTRXS","user_id"]) 
    }
    
    else{
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_otrxs <- rbind(data_otrxs, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -184,7 +165,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200,  retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_prov <- rbind(data_prov, df_timeline)
       
@@ -198,7 +179,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "PROVINCIAL", "user_
    }
    
    else{
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_prov <- rbind(data_prov, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -231,7 +212,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) 
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       
       data_hcdn <- rbind(data_hcdn, df_timeline)
@@ -245,7 +226,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HCDN", "user_id"]) 
    }
    
    else{
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_hcdn <- rbind(data_hcdn, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -278,7 +259,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
    if(j%%151 == 0) {
       print ('Waiting 15 min...')
       Sys.sleep(960) 
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200, retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_hsn <- rbind(data_hsn, df_timeline)
       
@@ -292,7 +273,7 @@ for (i in lista_politicxs[lista_politicxs$Tipo_organismo == "HSN", "user_id"]) {
    }
    
    else{
-      df_timeline <- get_timeline(i, n = 3200, token = token, retryonratelimit = T, since_id = paste0(st_id))
+      df_timeline <- get_timeline(i, n = 3200,  retryonratelimit = T, since_id = paste0(st_id))
       df_timeline <- data.frame(lapply(df_timeline, as.character), stringsAsFactors=FALSE)
       data_hsn <- rbind(data_hsn, df_timeline)
       df_timeline <- df_timeline[, -c(7, 15:18, 21:29, 33:47, 63:71, 74:90)]
@@ -323,13 +304,13 @@ for(i in lista_politicxs$user_id) {
       if(j%%151 == 0) {
          print ('Waiting 15 min...')
          Sys.sleep(960) 
-         df_search_1  <- get_timeline(i, n = 1, token = token, retryonratelimit = T)
+         df_search_1  <- get_timeline(i, n = 1, retryonratelimit = T)
          df_search_1 <- data.frame(lapply(df_search_1, as.character), stringsAsFactors=FALSE)
          df_search_f <- rbind(df_search_1, df_search_f)
          j=j+1
       } 
       else{
-         df_search_1  <- get_timeline(i, n = 1, token = token)
+         df_search_1  <- get_timeline(i, n = 1)
          df_search_1 <- data.frame(lapply(df_search_1, as.character), stringsAsFactors=FALSE)
          df_search_f <- rbind(df_search_1, df_search_f)
          j=j+1
