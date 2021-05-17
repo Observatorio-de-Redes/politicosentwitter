@@ -57,9 +57,10 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 <br/>
 <br/>
 <br/>
-Last but not least, this website was developed by [Guadalupe Gonzalez](https://twitter.com/guadag12) but it couldn't be possible without the help of [**Network's Observatory team**](https://twitter.com/O_de_R) (especially his director, [Juani Belbis](https://twitter.com/juanibelbis)) and the participation of the foundation **"[Democracia en Red](https://twitter.com/fundacionDER)"** -which always is watching over for the transparency- and the financial contribution of **"[National Democratic Institute](https://twitter.com/NDI)"** and their constant compromise with democracy all over the world.
+Last but not least, this website was developed by [Guadalupe Gonzalez](https://twitter.com/guadag12) but it couldn't be possible without the help of [Network's Observatory team](https://twitter.com/O_de_R) (especially his director, [Juani Belbis](https://twitter.com/juanibelbis)) and the participation of the foundation "[Democracia en Red](https://twitter.com/fundacionDER)" -which always is watching over for the transparency- and the financial contribution of "[National Democratic Institute](https://twitter.com/NDI)" and their constant compromise with democracy all over the world.
 <br/>
 <br/>
+
 ### Built with / Construido con 🛠️
 
 * [Rstudio](https://rstudio.com/) 
@@ -69,6 +70,7 @@ Last but not least, this website was developed by [Guadalupe Gonzalez](https://t
 
 <br/>
 <br/>
+
 ### See more! / Ver más! 📖
 
 * With these tweets you can reproduce [this workshop](https://github.com/labpoliticasuba/Taller-de-Twitter) put together by the Public Policy Laboratory at the University of Aires / Con estos tweets podes reproducir [este taller](https://github.com/labpoliticasuba/Taller-de-Twitter) que armó el Laboratorio de Políticas Públicas en la Universidad de Aires!
@@ -77,16 +79,6 @@ Last but not least, this website was developed by [Guadalupe Gonzalez](https://t
 <br/>
 <br/>
 
-### Authors / Autores ✒️
-
-_This project was made as part of the [Network Observatory](https://twitter.com/O_de_R))_ / _Es un proyecto realizado en el marco del [Observatorio de redes](https://twitter.com/O_de_R)_
-
-* **Guadalupe Gonzalez** - *Development and documentation / Desarrollo y documentación* - [Guadag12](https://github.com/Guadag12)
-* **Juan Ignacio Belbis** - * Direction and coordination / Dirección y coordinación* - [juanibelbis](https://twitter.com/juanibelbis)
-* **Democracia en Red** -  [DER](https://twitter.com/fundacionDER)
-* **National Democractic Institute** - [NDI](https://twitter.com/NDI)
-<br/>
-<br/>
 ### If you liked the project or found it useful / Si te gustó el proyecto o te resultó útil:
 
 * Tell others about this project / Comenta a otros sobre este proyecto 📢
