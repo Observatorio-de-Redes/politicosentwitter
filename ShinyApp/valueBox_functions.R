@@ -112,7 +112,8 @@ valueBox_ndi <- function() {
       )
   )
   
-}  valueBox_about <- function(imagen_vb, icon1, icon2, web1, web2, text, width_, height_) {
+} 
+valueBox_about <- function(imagen_vb, icon1, icon2, web1, web2, text, width_, height_) {
     div(class = "col-lg-3 col-md-10",
         div(class = "panel panel-primary",
             div(class = "panel-heading", style = paste0("background-color:#ffffff"),
