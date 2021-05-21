@@ -113,3 +113,56 @@ valueBox_ndi <- function() {
   )
   
 }
+valueBox_about <- function(imagen_vb, icon1, icon2, web1, web2, text, width_, height_) {
+  div(class = "col-lg-3 col-md-10",
+      div(class = "panel panel-primary",
+          div(class = "panel-heading", style = paste0("background-color:#ffffff"),
+              div(class = "row",
+                  div(class = "col-xs-10", style = "align : center;",
+                      tags$a(tags$img(src=imagen_vb, height=width_,align = "center",width=height_,style="display: block; "),  href=web1)
+                  )
+                
+              )
+          ),
+          div(class = "panel-footer",
+              div(class = "clearfix",
+                  div(class = "row",
+                      fluidRow(div(class = "col-xs-6",
+                          column(4,tags$a(icon(icon1, "fa-2x"),href=web1))
+                      ),
+                      div(class = "col-xs-4",
+                          column(1,tags$a(icon(icon2, "fa-2x"),href=web2)))
+                  ))
+                      ))
+          )
+      )
+  
+}
+
+valueBox_about_oder <- function(imagen_vb, icon1, icon2, web1, web2, text, width_, height_) {
+  div(class = "col-lg-3 col-md-10",
+      div(class = "panel panel-primary",
+          div(class = "panel-heading", style = paste0("background-color:#ffffff"),
+              div(class = "row",
+                  div(class = "col-xs-10", style = "align: center;",
+                      column(4),
+                      tags$a(tags$img(src=imagen_vb, height=width_,align = "center",width=height_,
+                                      style="display: block; "),  href=web1)
+                  )
+                  
+              )
+          ),
+          div(class = "panel-footer",
+              div(class = "clearfix",
+                  div(class = "row",
+                      fluidRow(div(class = "col-xs-6",
+                                   column(4,tags$a(icon(icon1, "fa-2x"),href=web1))
+                      ),
+                      div(class = "col-xs-4",
+                          column(1,tags$a(icon(icon2, "fa-2x"),href=web2)))
+                      ))
+              ))
+      )
+  )
+  
+}
