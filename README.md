@@ -18,8 +18,6 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 
 Thisapp could be described in three steps: (1) download all what you need, (2) check out the performance of an account over a period of time, (3) see how connected they are with social networks.
 
-
-
 <br/>
 <br/>
 <br/>
