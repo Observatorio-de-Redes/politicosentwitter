@@ -5,9 +5,7 @@ _Repository of tweets and retweets issued by officials, candidates and official 
 _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuentas oficiales de organismos gubernamentales de la República Argentina🌎_
 
 <br/>
-## Look at the [Shiny App](https://oderedes.shinyapps.io/politicosentwitter/) ! 
-
-## Mirá la [Shiny App](https://oderedes.shinyapps.io/politicosentwitter/) ! ⬅️🤩
+## Look at the [Shiny App](https://oderedes.shinyapps.io/politicosentwitter/) !  ⬅️🤩
 
 
 <br/>
