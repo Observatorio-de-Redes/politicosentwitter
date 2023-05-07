@@ -11,7 +11,7 @@ _Repositorio de tweets y retweets emitidos por funcionarios, candidatos y cuenta
 <br/>
 <br/>
 
-<img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/img%20def.png" width="500" height="250" align = "right" />
+<img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/img%20def.png" width="500" height="250" align = "right" />
 
 
 **Politicians on Twitter** is a dashboard that makes real time analysis about the performance on Twitter for more than 500 national public servants in Argentina with the possibility of downloading every tweet. We have decided to make this repository available to the community with open and reusable data to improve the production of knowledge and to keep an eye on what they tweet and delete. 
@@ -25,7 +25,7 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 <br/>
 <br/>
 <br/>
-  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif1_def.gif" width="500" height="250" align = "right"/>
+  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/gif1_def.gif" width="500" height="250" align = "right"/>
 
 (1) Open source it's the future: we firmly believe that what public servants tweet should be public information, so we decided to make an open repository with daily actualization to give people a sense of control. Also, this website is a tool for non programmers so they can download data for their own research without depending on pay services.
 
@@ -36,7 +36,7 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 <br/>
 <br/>
 
-  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif2_def.gif" width="500" height="250" align = "right"/>
+  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/gif2_def.gif" width="500" height="250" align = "right"/>
 
 (2) This app will show descriptive statistics about an account (like the average of favourites and retweets and number of followers), but also it'll show the progress of the interactions of every tweet, the evolution in the number of followers, a wordcloud with the frequency of word on a period of time and the main emojis that the user writes.
 
@@ -46,7 +46,7 @@ Thisapp could be described in three steps: (1) download all what you need, (2) c
 <br/>
 <br/>
 
-  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/shiny%20contest/gif3_def.gif" width="500" height="250" align = "right"/>
+  <img src="https://github.com/Observatorio-de-Redes/politicosentwitter/raw/main/ShinyApp/www/gif3_def.gif" width="500" height="250" align = "right"/>
   
 (3) Social Networks is an interesting approach to see how the public policy is made behind the scenes. We can see the negotiations and anticipate movements from who retweeted each other. And even see the profile image of every node!
 
